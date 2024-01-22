@@ -41,7 +41,7 @@ with app.app_context():
         description = fake.paragraph(),
         category = rc(categories),
         image = fake.image_url(),
-        other_Images = [fake.image_url() for _ in range(4)],
+        other_images = [fake.image_url() for _ in range(4)],
         price = fake.random_int(min=50, max=300),
         inclusives = [rc(inclusives),rc(inclusives)],
         amenities = [rc(amenities),rc(amenities)],
@@ -66,8 +66,8 @@ with app.app_context():
    for property in properties:
       for _ in range (fake.random_int(min=1,max=4)):
          reservation = Reservation(
-            check_in_date =Host,
-            check_out_date = da,
+            check_in_date =fake.date_this_year(),
+            check_out_date = fake.date_this_year(),
             number_of_guests = fake.random_int(max=5, min=1),
             user_id = fake.random_int(min=1, max=50),
             property_id = property.id

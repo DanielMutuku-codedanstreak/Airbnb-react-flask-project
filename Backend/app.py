@@ -1,5 +1,5 @@
 from flask import Flask
-
+from flask_migrate import Migrate
 from models import db,User,Property, Reservation
 
 app = Flask(__name__)
