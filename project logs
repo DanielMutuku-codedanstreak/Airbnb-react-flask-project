@@ -1,0 +1,20 @@
+A user can login as a guest or host.
+An authenticated user can get their details.
+An authenticated user can logout.
+A user can register as a host or a guest.
+An authenticated user can update their own details.
+An authenticated user can delete their own account.
+An authenticated user can view all the properties.
+An authenticated user can view  a single property and its details.
+An authenticated user can book a property.
+An authenticated user can cancel their bookings.
+An authenticated user can search for property by title.
+
+An authenticated host can add a property.
+An authenticated host can update their own prperty.
+An authenticated host can delete their own Property.
+An authenticated host can get their own questions.
+
+
+
+
