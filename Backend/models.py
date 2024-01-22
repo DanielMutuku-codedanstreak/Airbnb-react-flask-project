@@ -25,7 +25,7 @@ class Property(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.String(300), nullable=False)
-    image = db.Column(db.String(), nullable=False, unique=True)
+    image = db.Column(db.String(), nullable=False)
     other_images = db.Column(db.String(450), nullable=False)  # list []
     price = db.Column(db.Integer(), nullable=False)
     inclusives = db.Column(db.String(), nullable=False)  # list []
