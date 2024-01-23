@@ -1,5 +1,6 @@
 from models import db,User
 from flask import request,jsonify ,Blueprint
+from werkzeug.security import generate_password_hash
 
 user_bp = Blueprint('user_bp',__name__)
 
@@ -7,12 +8,18 @@ user_bp = Blueprint('user_bp',__name__)
 #add user (register)
 @user_bp.route('/signup', methods=['POST'])
 def register_user():
-    data = request.form
-    name = data.get('name')
-    email = data.get('email')
-    phone = data.get('phone')
-    password = data.get('password')
-    user_type = data.get('user_type')  
+    data = request.get_json()
+
+    required_fields = ['name', 'email', 'phone', 'password', 'user_type']
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"Missing required field: {field}"}), 400
+
+    name = data['name']
+    email = data['email']
+    phone = data['phone']
+    password = generate_password_hash(data['password'])
+    user_type = data['user_type']  
 
 
     check_email = User.query.filter_by(email=email).first()
@@ -24,11 +31,11 @@ def register_user():
         return jsonify({"error": "Phone number already exists"}), 404
 
     new_user = User(
-        name=name,
+        name=name.title(),
         email=email,
         phone=phone,
         password=password,
-        user_type=user_type
+        user_type=user_type.title(),
     )
 
     db.session.add(new_user)
@@ -49,6 +56,7 @@ def get_a_single_user(user_id):
          "name":user.name,
          "email":user.email,
          "phone":user.phone,
+         "user_type":user.user_type
 
       }),200
     
@@ -67,3 +75,31 @@ def delete_user(user_id):
         response = jsonify({"error": "User does not exist"}), 404
 
     return response
+
+
+#update user details
+@user_bp.route('/users/<int:user_id>', methods=['PATCH'])
+def update_user(user_id):
+    user = User.query.filter_by(id=user_id).first()
+
+    if user:
+        data = request.get_json()
+        for attr in data:
+            if attr == 'email':
+                check_email = User.query.filter_by(email=data[attr]).first()
+                if check_email:
+                    return jsonify({"error": f"The email: {data[attr]} already exists"}), 404
+            if attr == 'phone':
+                check_phone = User.query.filter_by(phone=data[attr]).first()
+                if check_phone:
+                    return jsonify({"error": f"The phone number: {data[attr]} already exists"}), 404
+            
+            setattr(user, attr, data[attr])
+        
+        db.session.commit()
+        return jsonify({"success": "User updated successfully"}), 200
+
+    elif not user:
+        return jsonify({"error": "User not found"}), 404
+
+    

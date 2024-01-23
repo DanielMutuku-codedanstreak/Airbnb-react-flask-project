@@ -28,7 +28,7 @@ def add_reservations():
     # Validate number of guests
     property = Property.query.filter_by(id=property_id).first()
     if number_of_guests > property.capacity:
-        return jsonify({"error": f"The property can accommodate a maximum of {property.capacity} guests"}), 400
+        return jsonify({"error": f"The property can accommodate a maximum of {property.capacity} guests"}), 404
 
     # Check for reservation conflicts
     conflicting_reservation = Reservation.query.filter(
@@ -41,9 +41,9 @@ def add_reservations():
     ).first()
 
     if conflicting_reservation:
-        return jsonify({"error": "Reservation conflicts with existing reservation"}), 400
+        return jsonify({"error": "Reservation already exists"}), 404
 
-    # Add the new reservation if all checks pass
+    
     new_reservation = Reservation(
         check_in_date=check_in_date,
         check_out_date=check_out_date,
@@ -56,7 +56,7 @@ def add_reservations():
     db.session.add(new_reservation)
     db.session.commit()
 
-    return jsonify({"success": "Reservation added successfully"})
+    return jsonify({"success": "Reservation added successfully"}),201
 
 #view bookings
 @res_bp.route('/reservations')
