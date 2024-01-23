@@ -201,4 +201,15 @@ def update_property(property_id):
     return response
 
 #delete property
+@prop_bp.route("/properties/<int:property_id>", methods=['DELETE'])
+def delete_property(property_id):
+    property = Property.query.filter_by(id=property_id).first()
 
+    if property:
+        db.session.delete(property)
+        db.session.commit()
+        response = jsonify({"success": "Property deleted successfully"}), 200
+    else:
+        response = jsonify({"error": "Property not found"}), 404
+
+    return response
