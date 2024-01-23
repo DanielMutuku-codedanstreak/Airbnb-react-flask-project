@@ -20,7 +20,7 @@ class User(db.Model, SerializerMixin):
 class Property(db.Model, SerializerMixin):
     __tablename__ = 'properties'
 
-    serialize_rules = ('-user.properties', '-reservations.property')
+    serialize_rules = ('-user.properties', )
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False, unique=True)
@@ -41,7 +41,7 @@ class Property(db.Model, SerializerMixin):
 
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False)
 
-    user = db.relationship('User', backref='properties', lazy=True)
+    user = db.relationship('User', backref='properties')
     # reservations = db.relationship('Reservation', backref='property', lazy=True)
 
 class Reservation(db.Model, SerializerMixin):
@@ -58,8 +58,8 @@ class Reservation(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False)
     property_id = db.Column(db.Integer(), db.ForeignKey('properties.id'), nullable=False)
 
-    user = db.relationship('User', backref='reservations', lazy=True)
-    property = db.relationship('Property', backref='reservations', lazy=True)
+    user = db.relationship('User', backref='reservations')
+    property = db.relationship('Property', backref='reservations')
 
 
 
