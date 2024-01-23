@@ -41,7 +41,7 @@ class Property(db.Model, SerializerMixin):
 
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False)
 
-    user = db.relationship('User', backref='properties')
+    user = db.relationship('User', backref='properties',lazy=True)
     # reservations = db.relationship('Reservation', backref='property', lazy=True)
 
 class Reservation(db.Model, SerializerMixin):
@@ -54,12 +54,13 @@ class Reservation(db.Model, SerializerMixin):
     check_out_date = db.Column(db.DateTime())
     number_of_guests = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime(), default=datetime.utcnow)
+    total = db.Column(db.Integer(), nullable=False)
    
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False)
     property_id = db.Column(db.Integer(), db.ForeignKey('properties.id'), nullable=False)
 
-    user = db.relationship('User', backref='reservations')
-    property = db.relationship('Property', backref='reservations')
+    user = db.relationship('User', backref='reservations',lazy=True)
+    property = db.relationship('Property', backref='reservations', lazy=True)
 
 
 

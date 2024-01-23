@@ -69,6 +69,7 @@ with app.app_context():
             check_in_date =fake.date_this_year(),
             check_out_date = fake.date_this_year(),
             number_of_guests = fake.random_int(max=5, min=1),
+            total = fake.random_int(min=100,max=1000),
             user_id = fake.random_int(min=1, max=50),
             property_id = property.id
          )
