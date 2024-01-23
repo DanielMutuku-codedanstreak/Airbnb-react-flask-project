@@ -11,6 +11,7 @@ import ViewAllListing from './Pages/ViewAllListing';
 import ViewSingleListing from './Pages/ViewSingleListing';
 import UpdateListing from './Pages/UpdateListing';
 import Register from './Pages/Register';
+import Profile from './Pages/Profile';
 
 const API_URL = 'https://airbnb-react-k4zr.onrender.com/listings' 
 
@@ -34,6 +35,7 @@ function App() {
           <Route path='/airbnb/:id' element={<InfoListing API_URL={API_URL}></InfoListing>}></Route>
           <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn}></Login>}></Route>
           <Route path='/register' element={<Register setIsLoggedIn={setIsLoggedIn}></Register>}></Route>
+          <Route path='/profile' element={<Profile setIsLoggedIn={setIsLoggedIn}></Profile>}></Route>
           <Route path='/admin' element={<Admin isLoggedIn={isLoggedIn} API_URL={API_URL}></Admin>}></Route>
           <Route path='/admin/viewall' element={<ViewAllListing isLoggedIn={isLoggedIn} API_URL={API_URL} allListings={allListings} setAllListings={setAllListings}></ViewAllListing>}></Route>
           <Route path='/admin/viewall/:id' element={<ViewSingleListing isLoggedIn={isLoggedIn} API_URL={API_URL} onDelete={deleteListing}></ViewSingleListing>}></Route>

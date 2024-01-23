@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 export default function Login(props) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
 
@@ -29,11 +29,11 @@ export default function Login(props) {
         <div className='col-md-6'>
           <form className='bg-secondary bg-opacity-25 p-4' style={{borderRadius: '15px'}} onSubmit={handleSubmit}>
             <div>
-              <h2 className='text-center'>SignIn</h2>
+              <h2 className='text-center'>Login</h2>
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-              <input type="email" className="form-control" aria-describedby="emailHelp" name='username' onChange={handleChange} value={formData.username} required />
+              <input type="email" className="form-control" aria-describedby="emailHelp" name='email' onChange={handleChange} value={formData.email} required />
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
