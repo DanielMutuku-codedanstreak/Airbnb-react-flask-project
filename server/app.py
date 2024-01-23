@@ -17,6 +17,9 @@ def index():
 
 # views
 app.register_blueprint(prop_bp)
+app.register_blueprint(res_bp)
+app.register_blueprint(user_bp)
+app.register_blueprint(auth_bp)
 
 if __name__ == '__main__':
    app.run(port=5000, debug=True)

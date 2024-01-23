@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: 15dcd517b8f7
+Revision ID: 00080b954022
 Revises: 
-Create Date: 2024-01-22 22:27:21.591834
+Create Date: 2024-01-23 12:13:53.826711
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '15dcd517b8f7'
+revision = '00080b954022'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -35,12 +35,12 @@ def upgrade():
     sa.Column('title', sa.String(length=50), nullable=False),
     sa.Column('description', sa.String(length=300), nullable=False),
     sa.Column('image', sa.String(), nullable=False),
-    sa.Column('other_images', sa.String(), nullable=False),
+    sa.Column('other_images', sa.JSON(), nullable=False),
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('category', sa.String(), nullable=False),
-    sa.Column('inclusives', sa.String(), nullable=False),
-    sa.Column('amenities', sa.String(), nullable=False),
-    sa.Column('rules', sa.String(), nullable=False),
+    sa.Column('inclusives', sa.JSON(), nullable=False),
+    sa.Column('amenities', sa.JSON(), nullable=False),
+    sa.Column('rules', sa.JSON(), nullable=False),
     sa.Column('capacity', sa.Integer(), nullable=False),
     sa.Column('bathrooms', sa.Integer(), nullable=False),
     sa.Column('beds', sa.Integer(), nullable=False),
@@ -58,6 +58,7 @@ def upgrade():
     sa.Column('check_out_date', sa.DateTime(), nullable=True),
     sa.Column('number_of_guests', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('total', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('property_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['property_id'], ['properties.id'], ),
