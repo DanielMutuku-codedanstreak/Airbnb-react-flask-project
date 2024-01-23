@@ -17,11 +17,11 @@ def register_user():
 
     check_email = User.query.filter_by(email=email).first()
     if check_email:
-        return jsonify({"error": "Email already exists"}), 400
+        return jsonify({"error": "Email already exists"}), 404
 
     check_phone = User.query.filter_by(phone=phone).first()
     if check_phone:
-        return jsonify({"error": "Phone number already exists"}), 400
+        return jsonify({"error": "Phone number already exists"}), 404
 
     new_user = User(
         name=name,
@@ -53,3 +53,18 @@ def get_a_single_user(user_id):
       }),200
     
     return response
+
+#delete user
+@user_bp.route('/users/<int:user_id>', methods = ['DELETE'])
+def get_user(user_id):
+   user = User.query.get(user_id)
+
+   if user:
+      db.session.delete(user)
+      db.session.commit()
+      return jsonify({"success":"user deleted successfully"}),200
+
+   else:
+      return jsonify({"error":"user does not exist"}),404
+
+   
