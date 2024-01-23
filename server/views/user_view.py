@@ -35,3 +35,21 @@ def register_user():
     db.session.commit()
 
     return jsonify({"message": "User registered successfully", "user_type": user_type}), 201
+
+#get a single user
+@user_bp.route('/users/<int:user_id>')
+def get_a_single_user(user_id):
+    user = User.query.filter_by(id=user_id).first()
+
+    if not user:
+      response = jsonify({"error":"user does not exist"}),404
+    else:  
+      response = jsonify({
+         "id":user.id,
+         "name":user.name,
+         "email":user.email,
+         "phone":user.phone,
+
+      }),200
+    
+    return response
