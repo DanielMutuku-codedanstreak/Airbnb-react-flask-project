@@ -14,19 +14,19 @@ with app.app_context():
 
    print('************** seeding users **************')
 
-   users=[]
-   user_types = ["Host",'Guest']
-   for _ in range (50):
-      user = User(
-         name = fake.name(),
-         email = fake.email(),
-         phone = fake.phone_number(),
-         password = fake.password(special_chars=True,digits= True, upper_case=True, lower_case=True),
-         user_type = rc(user_types)
-      )
-      db.session.add(user)
-      users.append(user)
-   db.session.commit()
+   # users=[]
+   # user_types = ["Host",'Guest']
+   # for _ in range (50):
+   #    user = User(
+   #       name = fake.name(),
+   #       email = fake.email(),
+   #       phone = fake.phone_number(),
+   #       password = fake.password(special_chars=True,digits= True, upper_case=True, lower_case=True),
+   #       user_type = rc(user_types)
+   #    )
+   #    db.session.add(user)
+   #    users.append(user)
+   # db.session.commit()
 
    print('************** seeding property **************')
 
