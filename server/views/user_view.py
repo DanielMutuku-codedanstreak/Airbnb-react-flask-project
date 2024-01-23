@@ -55,16 +55,15 @@ def get_a_single_user(user_id):
     return response
 
 #delete user
-@user_bp.route('/users/<int:user_id>', methods = ['DELETE'])
-def get_user(user_id):
-   user = User.query.get(user_id)
+@user_bp.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    user = User.query.get(user_id)
 
-   if user:
-      db.session.delete(user)
-      db.session.commit()
-      return jsonify({"success":"user deleted successfully"}),200
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        response = jsonify({"success": "User deleted successfully"}), 200
+    else:
+        response = jsonify({"error": "User does not exist"}), 404
 
-   else:
-      return jsonify({"error":"user does not exist"}),404
-
-   
+    return response
