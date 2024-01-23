@@ -1,6 +1,7 @@
 from sqlalchemy_serializer import SerializerMixin
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime,timedelta
+from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
 
@@ -50,8 +51,8 @@ class Reservation(db.Model, SerializerMixin):
     serialize_rules = ('-user.reservations', '-property.reservations')
 
     id = db.Column(db.Integer, primary_key=True)
-    check_in_date = db.Column(db.String(50))
-    check_out_date = db.Column(db.DateTime())
+    check_in_date = db.Column(db.DateTime(), nullable=False)
+    check_out_date = db.Column(db.DateTime(), nullable=False)
     number_of_guests = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime(), default=datetime.utcnow)
     total = db.Column(db.Integer(), nullable=False)
@@ -61,6 +62,21 @@ class Reservation(db.Model, SerializerMixin):
 
     user = db.relationship('User', backref='reservations',lazy=True)
     property = db.relationship('Property', backref='reservations', lazy=True)
+
+    # def is_checkout_valid(self, check_out_date):
+    #     return (
+    #         isinstance(check_out_date, datetime) and
+    #         check_out_date >= self.check_in_date + timedelta(days=1)
+    #     )
+
+    # @validates('check_out_date','check_in_date')
+    # def validate_check_out_date(self, key, check_out_date):
+    #     if not check_out_date or not self.check_in_date:
+    #         return check_out_date  # Let SQLAlchemy handle missing dates
+
+    #     if not self.is_checkout_valid(check_out_date):
+    #         raise ValueError("Check-out date must be at least a day after the check-in date.")
+
 
 
 
