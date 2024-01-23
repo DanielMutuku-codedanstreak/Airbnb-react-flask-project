@@ -1,1 +1,2 @@
-server/instance
+#ignore the database.sqlite
+.sqlite
