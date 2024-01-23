@@ -1,6 +1,7 @@
 from flask import Blueprint,jsonify,request
 from models import db, Property,User
 from sqlalchemy import desc
+from flask_jwt_extended import  get_jwt_identity, jwt_required
 
 prop_bp = Blueprint('prop_bp', __name__)
 
