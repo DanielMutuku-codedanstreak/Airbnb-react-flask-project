@@ -182,10 +182,23 @@ def add_property():
 
     
 
-    
-
-
 #update property
+@prop_bp.route("/properties/<int:property_id>", methods=['PATCH'])
+def update_property(property_id):
+    property = Property.query.filter_by(id=property_id).first()
+
+    if property:
+        data = request.get_json()
+
+        for attr in data:
+            setattr(property, attr, data[attr])
+
+        db.session.commit()
+        response = jsonify({"success": "Property updated successfully"}), 200
+    else:
+        response = jsonify({"error": "Property not found"}), 404
+
+    return response
 
 #delete property
 
