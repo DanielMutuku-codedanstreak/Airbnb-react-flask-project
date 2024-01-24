@@ -65,7 +65,7 @@ export default function UpdateListing(props) {
       })
       .catch((error) => console.log(error));
     }else{
-      navigate('/');
+      // navigate('/');
     }
   }, [props.API_URL, props.isLoggedIn, params.id,navigate]);
   //function to handle change event
@@ -176,9 +176,9 @@ export default function UpdateListing(props) {
     })
   }
   //function to navigate back
-  const goBack =()=>{
-    navigate(-1)
-  }
+  // const goBack =()=>{
+  //   navigate(-1)
+  // }
 
   return (
   <div id="addSection">

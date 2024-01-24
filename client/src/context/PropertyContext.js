@@ -7,6 +7,7 @@ export default function PropertyProvider({ children }) {
   const [allListings, setAllListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState('');
+  const [onUpdate, setOnUpdate] = useState(true)
 
   useEffect(() => {
     fetch(PROPERTY_API_URL)
@@ -15,7 +16,7 @@ export default function PropertyProvider({ children }) {
         setAllListings(data);
       })
       .catch((error) => console.log(`Error fetching listings data, ${error}`));
-  }, [searchTerm]);
+  }, [searchTerm][onUpdate]);
 
   const updateSearchTerm = (term) => {
     setSearchTerm(term);
@@ -45,12 +46,45 @@ export default function PropertyProvider({ children }) {
     });
   };
 
+  //Delete property
+  function deleteProperty(id){
+    fetch(`/properties/${id}`,{
+      method:'DELETE'
+    })
+    .then(res => res.json())
+    .then((response) => {
+      if(response.ok){
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: response.success,
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }else{
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: response.error,
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+
+      
+      
+    })
+  }
+
+
+
   const contextData = {
     allListings,
     searchTerm,
     updateSearchTerm,
     searchListings,
     searchError,
+    
   };
 
   return (
