@@ -1,17 +1,23 @@
 import React, { useEffect, useState, createContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const ReservationContext = createContext();
 
 export default function ReservationProvider({ children }) {
   const RESERVATION_API_URL = '/reservations';
   const [reservations, setReservations] = useState([]);
+  const { navigate } = useNavigate();
 
   useEffect(() => {
+    fetchReservations();
+  }, []);
+
+  const fetchReservations = () => {
     fetch(RESERVATION_API_URL)
       .then((response) => response.json())
       .then((data) => setReservations(data))
       .catch((error) => console.error('Error fetching reservations:', error));
-  }, []);
+  };
 
   const addReservation = (formData) => {
     const authToken = sessionStorage.getItem('authToken');
@@ -26,9 +32,14 @@ export default function ReservationProvider({ children }) {
     })
       .then((res) => res.json())
       .then((response) => {
-        navigate('/reservations');
-
-        setReservations((prevReservations) => [...prevReservations, response.data]);
+        if (response.success) {
+          navigate('/reservations');
+          setReservations((prevReservations) => [...prevReservations, response.data]);
+        } else if (response.error) {
+          console.error('Error adding reservation:', response.error);
+        } else {
+          console.error('Something went wrong while adding the reservation.');
+        }
       })
       .catch((error) => {
         console.error('Error adding reservation:', error);
@@ -49,7 +60,6 @@ export default function ReservationProvider({ children }) {
       .then((response) => {
         if (response.success) {
           navigate('/reservations');
-
           setReservations((prevReservations) =>
             prevReservations.filter((reservation) => reservation.id !== id)
           );
@@ -58,8 +68,6 @@ export default function ReservationProvider({ children }) {
         } else {
           console.error('Something went wrong while deleting the reservation.');
         }
-
-        setOnchange(!onchange);
       })
       .catch((error) => {
         console.error('Error deleting reservation:', error);
@@ -70,6 +78,7 @@ export default function ReservationProvider({ children }) {
     reservations,
     addReservation,
     deleteReservation,
+    fetchReservations, // Added a function for explicit fetching
   };
 
   return (

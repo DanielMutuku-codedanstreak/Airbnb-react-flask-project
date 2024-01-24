@@ -14,6 +14,7 @@ import Register from './Pages/Register';
 import Profile from './Pages/Profile';
 import MyBookings from './Pages/MyBookings';
 import PropertyProvider from './context/PropertyContext';
+import ReservationProvider from './context/ReservationContext';
 
 import ResetPassword from './Pages/ResetPassword';
 
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <ReservationProvider>
     <UserProvider>
       <PropertyProvider>
         <Routes>
@@ -45,6 +47,7 @@ function App() {
         </Routes>
       </PropertyProvider>
       </UserProvider>
+      </ReservationProvider>
     </BrowserRouter>
   );
 }
