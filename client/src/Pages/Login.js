@@ -1,26 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 export default function Login(props) {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const {login} = useContext(UserContext)
 
-  //handle change of input data
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const [email,setEmail] = useState();
+  const [password, setPassword] = useState()
 
+  
   //handle form submit
   const handleSubmit = (e) => {
-    e.preventDefault();
-    props.setIsLoggedIn(true);
-    navigate('/admin');
+   e.preventDefault()
+   login(email, password)
+    
   };
 
   return (
@@ -33,19 +26,24 @@ export default function Login(props) {
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-              <input type="email" className="form-control" aria-describedby="emailHelp" name='email' onChange={handleChange} value={formData.email} required />
+              <input type="email" className="form-control" aria-describedby="emailHelp" name='email' onChange={(e) => setEmail(e.target.value)} value={email} required />
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-              <input type="password" className="form-control" name='password' onChange={handleChange} value={formData.password} required />
+              <input type="password" className="form-control" name='password' onChange={(e) => setPassword(e.target.value)} value={password} required />
             </div>
-            <div className='mb-3'>
+            <div className='mb-3 '>
               <p>Don't have an account? <Link to='/register'>Register here</Link></p>
             </div>
-            <button type="submit" className="btn btn-primary">Login</button>
-            <div className='mt-3'>
-              <p><Link to='/forgot-password'>Forgot Password?</Link></p>
+            <div className='mb-3 text-cen'>
+              <p><Link to='/reset_password'>Forgot Password?</Link></p>
             </div>
+            <div className=''>
+            <button type="submit" className="btn btn-primary px-5">Login</button>
+
+            </div>
+            
+            
           </form>
         </div>
       </div>
