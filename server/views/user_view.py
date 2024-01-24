@@ -7,14 +7,14 @@ user_bp = Blueprint('user_bp',__name__)
 
 
 #add user (register)
-@user_bp.route('/signup', methods=['POST'])
+@user_bp.route('/register', methods=['POST'])
 def register_user():
     data = request.get_json()
 
     required_fields = ['name', 'email', 'phone', 'password', 'user_type']
     for field in required_fields:
         if field not in data:
-            return jsonify({"error": f"Missing required field: {field}"}), 400
+            return jsonify({"error": f"Missing required field: {field}"}), 404
 
     name = data['name']
     email = data['email']
@@ -42,7 +42,7 @@ def register_user():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({"message": "User registered successfully", "user_type": user_type}), 201
+    return jsonify({"success": "User registered successfully"}), 201
 
 #get a single user
 @user_bp.route('/users/<int:user_id>')
