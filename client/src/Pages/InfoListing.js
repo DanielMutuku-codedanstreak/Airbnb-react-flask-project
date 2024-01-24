@@ -18,9 +18,9 @@ export default function InfoListing() {
             Loading...
         </div>
     }
-    console.log(listing)
+    
     //destructure our listing
-    const {title,description,category,image,other_Images,price,inclusives,amenities,rules,bathrooms,beds,capacity, location,host} = listing
+    const {title,description,category,image,other_images,price,inclusives,amenities,rules,bathrooms,beds,capacity, location,host} = listing
     //capture inclusives
     const inclusivesList = inclusives && inclusives.map((inclusive, index) => {
         return(
@@ -40,9 +40,9 @@ export default function InfoListing() {
         )
     })
     //cpture other images
-    const otherImagesList = other_Images && other_Images.map((otherImage, index)=>{
+    const otherImagesList = other_images && other_images.map((otherImage, index)=>{
         return(
-            //console.log(otherImage)
+            // console.log(otherImage)
             <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                 <img src={otherImage} alt='Airbnb Loading...' className='d-block w-100 rounded'></img>
             </div>
