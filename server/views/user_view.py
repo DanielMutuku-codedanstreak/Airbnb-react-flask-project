@@ -2,6 +2,7 @@ from models import db,User
 from flask import request,jsonify ,Blueprint
 from werkzeug.security import generate_password_hash
 
+
 user_bp = Blueprint('user_bp',__name__)
 
 
