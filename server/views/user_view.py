@@ -103,9 +103,9 @@ def update_user(user_id):
     elif not user:
         return jsonify({"error": "User not found"}), 404
 
-#change password
-@user_bp.route('/change_password' ,methods=['POST'])
-def change_password():
+#reset password
+@user_bp.route('/reset_password' ,methods=['POST'])
+def reset_password():
     data = request.get_json()
 
     # Extract data from the request
