@@ -31,7 +31,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Layout isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}>
             <Route index element={<Home />} />
-            <Route path='/airbnb/:id' element={<InfoListing />} />
+            <Route path='/properties/:id' element={<InfoListing />} />
             <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path='/register' element={<Register setIsLoggedIn={setIsLoggedIn} />} />
             <Route path='/profile' element={<Profile setIsLoggedIn={setIsLoggedIn} />} />

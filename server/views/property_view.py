@@ -50,7 +50,7 @@ def get_single_property(property_id):
    if not property:
       return jsonify({"error":"property not found"}),404
    else:
-      return jsonify([
+      return jsonify(
       {
          "id":property.id,
          "title":property.title,
@@ -73,7 +73,7 @@ def get_single_property(property_id):
             },
           
          
-      }]
+      }
    ),200
 
 #search property by title

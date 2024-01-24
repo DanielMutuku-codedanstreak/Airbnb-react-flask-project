@@ -53,11 +53,11 @@ with app.app_context():
 ]
    for _ in range (20):
       property =Property(
-         title = fake.sentence(),
-        description = fake.paragraph(),
+         title = fake.word(),
+        description = fake.sentence(),
         category = rc(categories),
-        image = fake.image_url(),
-        other_images = [fake.image_url() for _ in range(4)],
+        image = 'https://a0.muscache.com/im/pictures/c3281f7a-ca80-4ff7-a3a8-131469e42c16.jpg?im_w=720',
+        other_images = ['https://a0.muscache.com/im/pictures/c3281f7a-ca80-4ff7-a3a8-131469e42c16.jpg?im_w=720' for _ in range(4)],
         price = fake.random_int(min=50, max=300),
         inclusives = [rc(inclusives),rc(inclusives)],
         amenities = [rc(amenities),rc(amenities)],
