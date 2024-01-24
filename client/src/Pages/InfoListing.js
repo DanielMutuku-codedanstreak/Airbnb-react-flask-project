@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-export default function InfoListing(props) {
+export default function InfoListing() {
     const params = useParams()
     const navigate = useNavigate()
     const [listing,setListing] = useState(null)
     //function to fetch data of one listing
     useEffect(()=>{
-        fetch(`${props.API_URL}/${params.id}`)
+        fetch(`/properties/${params.id}`)
         .then(res=> res.json())
         .then(data => setListing(data))
         .catch(error => console.log(error))
-    },[props.API_URL, params.id])
+    },[params.id])
     //loading feature as we await listing to load
     if(!listing){
         return <div>
             Loading...
         </div>
     }
+    console.log(listing)
     //destructure our listing
     const {title,description,category,image,other_Images,price,inclusives,amenities,rules,bathrooms,beds,capacity, location,host} = listing
     //capture inclusives
-    const inclusivesList = inclusives.map((inclusive, index) => {
+    const inclusivesList = inclusives && inclusives.map((inclusive, index) => {
         return(
             //console.log(inclusive)
             <div key={index} className='card py-3 px-2'>
@@ -30,7 +31,7 @@ export default function InfoListing(props) {
         )
     })
     //capture amenities
-    const amenitiesList = amenities.map((amenity, index) => {
+    const amenitiesList = amenities && amenities.map((amenity, index) => {
         return(
             //console.log(amenity)
             <div key={index} className='col-md-6'>
@@ -39,7 +40,7 @@ export default function InfoListing(props) {
         )
     })
     //cpture other images
-    const otherImagesList = other_Images.map((otherImage, index)=>{
+    const otherImagesList = other_Images && other_Images.map((otherImage, index)=>{
         return(
             //console.log(otherImage)
             <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
@@ -104,8 +105,8 @@ export default function InfoListing(props) {
                     <div className=''>
                         <h6>House Rules</h6>
                         <div className='container row'>
-                            <p className='col-md-6'><i className="fa fa-clock-o" aria-hidden="true"></i> {rules.checkin}</p>
-                            <p className='col-md-6'><i className="fa fa-clock-o" aria-hidden="true"></i> {rules.checkout}</p>
+                            <p className='col-md-6'><i className="fa fa-clock-o" aria-hidden="true"></i> {rules && rules.checkin}</p>
+                            <p className='col-md-6'><i className="fa fa-clock-o" aria-hidden="true"></i> {rules && rules.checkout}</p>
                         </div>
                     </div>
                     <div className='mb-3'>
@@ -114,9 +115,9 @@ export default function InfoListing(props) {
                     </div>
                     <div className='mb-3'>
                         <h6>Contact Host</h6>
-                        <p><i className="fa fa-user" aria-hidden="true"></i> {host.name}</p>
-                        <p><i className="fa fa-envelope" aria-hidden="true"></i><a href={`mailto:${host.email}`} className='text-dark'> {host.email}</a></p>
-                        <p><i className="fa fa-phone-square" aria-hidden="true"></i><a href={`tel:${host.phone}`} className='text-dark'> {host.phone}</a></p>
+                        <p><i className="fa fa-user" aria-hidden="true"></i> {host && host.name}</p>
+                        <p><i className="fa fa-envelope" aria-hidden="true"></i><a href={`mailto:${host && host.email}`} className='text-dark'> {host && host.email}</a></p>
+                        <p><i className="fa fa-phone-square" aria-hidden="true"></i><a href={`tel:${host && host.phone}`} className='text-dark'> {host && host.phone}</a></p>
                     </div>
                 </div>
                 <div className='w-50'>
