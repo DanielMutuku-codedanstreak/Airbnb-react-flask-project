@@ -40,7 +40,7 @@ function App() {
             <Route path='/admin/viewall' element={<ViewAllListing isLoggedIn={isLoggedIn} />} />
             <Route path='/admin/viewall/:id' element={<ViewSingleListing isLoggedIn={isLoggedIn} />} />
             <Route path='/admin/edit/:id' element={<UpdateListing isLoggedIn={isLoggedIn} />} />
-            <Route path='/reset-password' element={<ResetPassword setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path='/reset_password' element={<ResetPassword setIsLoggedIn={setIsLoggedIn} />} />
           </Route>
         </Routes>
       </PropertyProvider>
