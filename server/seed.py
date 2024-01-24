@@ -14,19 +14,19 @@ with app.app_context():
 
    print('************** seeding users **************')
 
-   # users=[]
-   # user_types = ["Host",'Guest']
-   # for _ in range (50):
-   #    user = User(
-   #       name = fake.name(),
-   #       email = fake.email(),
-   #       phone = fake.phone_number(),
-   #       password = fake.password(special_chars=True,digits= True, upper_case=True, lower_case=True),
-   #       user_type = rc(user_types)
-   #    )
-   #    db.session.add(user)
-   #    users.append(user)
-   # db.session.commit()
+   users=[]
+   user_types = ["Host",'Guest']
+   for _ in range (50):
+      user = User(
+         name = fake.name(),
+         email = fake.email(),
+         phone = fake.phone_number(),
+         password = fake.password(special_chars=True,digits= True, upper_case=True, lower_case=True),
+         user_type = rc(user_types)
+      )
+      db.session.add(user)
+      users.append(user)
+   db.session.commit()
 
    print('************** seeding property **************')
 
@@ -78,27 +78,27 @@ with app.app_context():
    print('************** seeding reservations **************')
 
 
-   # reservations =[]
-   # for property in properties:
-   #  for _ in range(fake.random_int(min=1, max=4)):
-   #      start_date = fake.date_between(start_date="today", end_date="+1y")
+   reservations =[]
+   for property in properties:
+    for _ in range(fake.random_int(min=1, max=4)):
+        start_date = fake.date_between(start_date="today", end_date="+1y")
         
-   #      # Generate a random duration for the reservation (between 1 and 14 days)
-   #      reservation_duration = timedelta(days=fake.random_int(min=1, max=14))
-   #      end_date = start_date + reservation_duration
+        # Generate a random duration for the reservation (between 1 and 14 days)
+        reservation_duration = timedelta(days=fake.random_int(min=1, max=14))
+        end_date = start_date + reservation_duration
 
-   #      reservation = Reservation(
-   #          check_in_date=start_date,
-   #          check_out_date=end_date,
-   #          number_of_guests=fake.random_int(max=5, min=1),
-   #          total=fake.random_int(min=100, max=1000),
-   #          user_id=fake.random_int(min=1, max=50),
-   #          property_id=property.id
-   #      )
-   #      db.session.add(reservation)
-   #      reservations.append(reservation)
+        reservation = Reservation(
+            check_in_date=start_date,
+            check_out_date=end_date,
+            number_of_guests=fake.random_int(max=5, min=1),
+            total=fake.random_int(min=100, max=1000),
+            user_id=fake.random_int(min=1, max=50),
+            property_id=property.id
+        )
+        db.session.add(reservation)
+        reservations.append(reservation)
 
-   # db.session.commit()
+   db.session.commit()
 
 
    print('************** seeding complete **************')

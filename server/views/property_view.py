@@ -1,13 +1,13 @@
 from flask import Blueprint,jsonify,request
 from models import db, Property,User
 from sqlalchemy import desc
-from flask_jwt_extended import  get_jwt_identity, jwt_required
+
 
 prop_bp = Blueprint('prop_bp', __name__)
 
 #view all properties
 @prop_bp.route('/properties')
-@jwt_required()
+# @jwt_required()
 
 def get_all_properties():
    properties = Property.query.all()
@@ -43,7 +43,7 @@ def get_all_properties():
 
 #view single property
 @prop_bp.route('/properties/<int:property_id>')
-@jwt_required()
+# @jwt_required()
 
 def get_single_property(property_id):
    property = Property.query.filter_by(id=property_id).first()
@@ -78,7 +78,7 @@ def get_single_property(property_id):
 
 #search property by title
 @prop_bp.route('/properties/<string:search>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def search_property(search):
    properties= Property.query.filter(Property.title.ilike(f'%{search}%')).all()
      
@@ -114,7 +114,7 @@ def search_property(search):
 
 #add property
 @prop_bp.route('/properties',methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def add_property():
     data = request.get_json()
     
@@ -132,7 +132,7 @@ def add_property():
     beds = data['beds']
     location = data['location']
     
-    user_id= get_jwt_identity()               #current user id
+    user_id= 2              #current user id  jwt_get_required
 
     user=User.query.filter_by(id=user_id).first()
     if user.user_type == 'guest':
@@ -192,11 +192,11 @@ def add_property():
 
 #update property
 @prop_bp.route("/properties/<int:property_id>", methods=['PATCH'])
-@jwt_required()
+
 def update_property(property_id):
     property = Property.query.filter_by(id=property_id).first()
 
-    user_id = jwt_get_identity()                     #current user id
+    user_id = 2                     #current user id
 
 
     if property.user_id == user_id:
@@ -214,10 +214,10 @@ def update_property(property_id):
 
 #delete property
 @prop_bp.route("/properties/<int:property_id>", methods=['DELETE'])
-@jwt_required()
+
 def delete_property(property_id):
     property = Property.query.filter_by(id=property_id).first()
-
+    user_id = 2  # current user
     if property:
       if property.user_id == user_id:
 

@@ -83,7 +83,7 @@ def my_bookings():
 #cancel own bookings
 @res_bp.route('/reservations/<int:reservation_id>', methods=['DELETE'])
 def cancel_reservation(reservation_id):
-   user_id =27 #current user
+   user_id = 18 #current user
    booking = Reservation.query.get(reservation_id)
 
    if  booking is None:
