@@ -36,8 +36,9 @@ export default function Navbar() {
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div className="navbar-nav ms-auto">
-                                <NavLink className="nav-link active" aria-current="page" to="/admin">Admin</NavLink>
+                                <NavLink className="nav-link active" aria-current="page" to="/add_property">Add Property</NavLink>
                                 <NavLink className="nav-link active" aria-current="page" to="/admin/viewall">View All</NavLink>
+                                
                                 <Link>
                                     <button className='btn btn-primary' onClick={logout}>Logout</button>
                                 </Link>

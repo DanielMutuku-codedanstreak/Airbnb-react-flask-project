@@ -159,28 +159,28 @@ def add_property():
       db.session.add(new_property)
       db.session.commit()
       
-      property = Property.query.order_by(desc(Property.id)).first()
+      user = User.query.get(user_id)
       
       return jsonify([
       {
-         "id":property.id,
-         "title":property.title,
-         "description":property.description,
-         "image":property.image,
-         "other_images":property.other_images,
-         "price":property.price,
-         "category":property.category,
-         "inclusives":property.inclusives,
-         "amenities":property.amenities,
-         "rules":property.rules,
-         "capacity":property.capacity,
-         "bathrooms":property.bathrooms,
-         "beds":property.beds,
-         "location":property.location,
+         
+         "title":title,
+         "description":description,
+         "image":image,
+         "other_images":other_images,
+         "price":price,
+         "category":category,
+         "inclusives":inclusives,
+         "amenities":amenities,
+         "rules":rules,
+         "capacity":capacity,
+         "bathrooms":bathrooms,
+         "beds":beds,
+         "location":location,
          "host":{
-            "name":property.user.name,
-            "email":property.user.email,
-            "phone":property.user.phone,
+            "name":user.name,
+            "email":user.email,
+            "phone":user.phone,
             },
           
          
