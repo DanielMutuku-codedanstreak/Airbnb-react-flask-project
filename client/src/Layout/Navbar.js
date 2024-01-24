@@ -7,6 +7,7 @@ export default function Navbar() {
 
   return (
     <div>
+
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <Link className="navbar-brand" to={loggedIn ? "/admin" : "/"}>AIRBNB</Link>
@@ -24,6 +25,7 @@ export default function Navbar() {
               ) : (
                 <>
                   <NavLink className="nav-link active" to="/admin">Admin</NavLink>
+                 <NavLink className="nav-link active" aria-current="page" to="/add_property">Add Property</NavLink>
                   <NavLink className="nav-link active" to="/admin/viewall">View All</NavLink>
                   <NavLink className="nav-link active" to="/profile">Profile</NavLink>
                   <Link>
@@ -35,6 +37,7 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
+
     </div>
   );
 }

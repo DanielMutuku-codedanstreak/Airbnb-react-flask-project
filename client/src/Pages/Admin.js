@@ -13,8 +13,7 @@ export default function Admin(props) {
 
   return (
     <div>
-        <AdminHeader></AdminHeader>
-        <AddListing API_URL={props.API_URL}></AddListing>
+       
     </div>
   )
 }
