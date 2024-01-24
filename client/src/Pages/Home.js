@@ -1,14 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Landing from '../Components/Landing'
-import { PropertyContext } from '../context/PropertyContext'
 
-export default function Home(props) {
- const{properties} = useContext(PropertyContext)
- console.log(properties)
-
+export default function Home() {
   return (
     <div>
-        <Landing API_URL={props.API_URL}></Landing>
+        <Landing />
     </div>
   )
 }

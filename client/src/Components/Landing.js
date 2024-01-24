@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import ListingList from './ListingList'
 import UtilityBar from './UtilityBar'
 
@@ -21,12 +21,12 @@ export default function Landing(props) {
     setListings(filtered)
   }
   //function to fetch our listings
-  useEffect(()=>{
-    fetch(props.API_URL)
-    .then(res=> res.json())
-    .then(data => setListings(data))
-    .catch(error => console.log(`Error fetching listings data, ${error}`))
-  },[props.API_URL,searchTerm]) 
+//   useEffect(()=>{
+//     fetch(props.API_URL)
+//     .then(res=> res.json())
+//     .then(data => setListings(data))
+//     .catch(error => console.log(`Error fetching listings data, ${error}`))
+//   },[props.API_URL,searchTerm]) 
   return (
     <div>
       <div className="jumbotron text-center">
@@ -34,7 +34,7 @@ export default function Landing(props) {
         <p className="lead">Explore and book unique homes and experiences around the world.</p>
       </div>
       <UtilityBar listings={listings} setListings={setListings} handleSearch={handleSearch}></UtilityBar>
-      <ListingList listings={listings} searchTerm={searchTerm}></ListingList>
+      <ListingList></ListingList>
     </div>
   )
 }
