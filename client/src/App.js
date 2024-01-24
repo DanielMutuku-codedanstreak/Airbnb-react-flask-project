@@ -13,6 +13,7 @@ import UpdateListing from './Pages/UpdateListing';
 import Register from './Pages/Register';
 import Profile from './Pages/Profile';
 import MyBookings from './Pages/MyBookings';
+import PropertyProvider from './context/PropertyContext';
 
 const API_URL = 'https://airbnb-react-k4zr.onrender.com/listings' 
 
@@ -31,6 +32,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <PropertyProvider>
       <Routes>
         <Route path='/' element={<Layout isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}></Layout>}>
           <Route index element={<Home API_URL={API_URL}></Home>}></Route>
@@ -45,6 +47,7 @@ function App() {
           <Route path='/admin/edit/:id' element={<UpdateListing isLoggedIn={isLoggedIn} API_URL={API_URL} ></UpdateListing>}></Route>
         </Route>
       </Routes>
+      </PropertyProvider>
     </BrowserRouter>
   );
 }
