@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Listing() {
+export default function Listing(props) {
      const {title,category,image,price,bathrooms,beds,capacity, location} = props.listing
   return (
     <div id='listing'>
