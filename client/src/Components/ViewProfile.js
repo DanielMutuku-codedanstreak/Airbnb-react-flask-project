@@ -2,35 +2,45 @@ import React, { useState, useEffect } from 'react';
 
 const ViewProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    //fetch user profile data
-    fetch('')
+    fetch('/users/51') 
       .then((response) => response.json())
-      .then((data) => setUserProfile(data))
-      .catch((error) => console.error('Error fetching user profile:', error));
+      .then((data) => {
+        setUserProfile(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching user profile:', error);
+        setLoading(false);
+      });
   }, []);
 
   return (
     <div className="d-flex justify-content-center mt-5" style={{ minHeight: '65vh' }}>
       <div className="text-center">
         <h3>View Profile</h3>
-        
-        {userProfile ? (
+
+        {loading ? (
+          <p>Loading user profile...</p>
+        ) : userProfile ? (
           <>
             <div className="mb-3">
-              <img
-                src={userProfile.profilePhoto}
-                alt="Profile"
-                style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover' }}
-              />
-              <br />
-              <span className="badge bg-primary">{userProfile.userType}</span>
+              <button type="button" className={`btn ${userProfile.user_type === 'host' ? 'btn-primary' : 'btn-secondary'}`}>
+                {userProfile.user_type.charAt(0).toUpperCase() + userProfile.user_type.slice(1)}
+              </button>
             </div>
-            
+
             <div className="mb-3">
               <label htmlFor="fullName" className="form-label">Full Name:</label>
-              <input type="text" className="form-control" id="fullName" value={userProfile.fullName} disabled />
+              <input
+                type="text"
+                className="form-control"
+                id="fullName"
+                value={userProfile.name}
+                disabled
+              />
             </div>
 
             <div className="mb-3">
@@ -44,7 +54,7 @@ const ViewProfile = () => {
             </div>
           </>
         ) : (
-          <p>Loading user profile...</p>
+          <p>Error loading user profile.</p>
         )}
       </div>
     </div>
