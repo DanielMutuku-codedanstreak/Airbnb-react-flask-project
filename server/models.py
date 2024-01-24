@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime,timedelta
 from sqlalchemy.orm import validates
 
+
 db = SQLAlchemy()
 
 class User(db.Model, SerializerMixin):

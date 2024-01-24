@@ -14,7 +14,11 @@ import Register from './Pages/Register';
 import Profile from './Pages/Profile';
 import MyBookings from './Pages/MyBookings';
 import PropertyProvider from './context/PropertyContext';
+
+import ResetPassword from './Pages/ResetPassword';
+
 import UserProvider from './context/UserContext';
+
 
 function App() {
   //create a useState for login
@@ -36,6 +40,7 @@ function App() {
             <Route path='/admin/viewall' element={<ViewAllListing isLoggedIn={isLoggedIn} />} />
             <Route path='/admin/viewall/:id' element={<ViewSingleListing isLoggedIn={isLoggedIn} />} />
             <Route path='/admin/edit/:id' element={<UpdateListing isLoggedIn={isLoggedIn} />} />
+            <Route path='/reset-password' element={<ResetPassword setIsLoggedIn={setIsLoggedIn} />} />
           </Route>
         </Routes>
       </PropertyProvider>

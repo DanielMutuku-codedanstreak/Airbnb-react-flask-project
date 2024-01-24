@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
 
-  useEffect(() => {
-    //fetch bookings data
-    fetch('')
-      .then((response) => response.json())
-      .then((data) => setBookings(data))
-      .catch((error) => console.error('Error fetching bookings:', error));
-  }, []);
+  // useEffect(() => {
+  //   //fetch bookings data
+  //   fetch('')
+  //     .then((response) => response.json())
+  //     .then((data) => setBookings(data))
+  //     .catch((error) => console.error('Error fetching bookings:', error));
+  // }, []);
 
   return (
     <div>

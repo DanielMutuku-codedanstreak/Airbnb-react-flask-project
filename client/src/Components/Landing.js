@@ -1,6 +1,7 @@
 import React from 'react'
 import ListingList from './ListingList'
 import UtilityBar from './UtilityBar'
+import { useState } from 'react'
 
 export default function Landing(props) {
   const [listings, setListings]=useState([])
