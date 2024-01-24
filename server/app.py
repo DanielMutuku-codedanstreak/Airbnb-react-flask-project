@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_migrate import Migrate
-from models import db,User,Property, Reservation
+from models import db,User,Property, Reservation, TokenBlocklist
 
 from views import *
 from flask_jwt_extended import JWTManager
@@ -27,6 +27,20 @@ app.register_blueprint(prop_bp)
 app.register_blueprint(res_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(auth_bp)
+
+
+#JWT LOADER
+@jwt.token_in_blocklist_loader
+def token_in_blocklist_callback(jwt_data):
+   jti = jwt_data['jti']
+
+   token = TokenBlocklist.query.filter_by(jti=jti).first()
+
+   if token:
+      return token
+   else:
+      return None
+
 
 if __name__ == '__main__':
    app.run(port=5000, debug=True)

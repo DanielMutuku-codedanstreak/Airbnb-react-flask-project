@@ -103,4 +103,25 @@ def update_user(user_id):
     elif not user:
         return jsonify({"error": "User not found"}), 404
 
+#change password
+@user_bp.route('/change_password' ,methods=['POST'])
+def change_password():
+    data = request.get_json()
+
+    # Extract data from the request
+    name = data['name']
+    email = data['email']
+    new_password = data['password']
+
+    # Verify details
+    check_user = User.query.filter_by(email=email).first()
+
+    if not check_user or check_user.name.lower() != name.lower():
+        return jsonify({"error": "Details do not match"}), 404
+
+    # Update the user's password
+    check_user.password = generate_password_hash(new_password)
     
+    db.session.commit()
+
+    return jsonify({"success": "Password changed successfully"}), 200

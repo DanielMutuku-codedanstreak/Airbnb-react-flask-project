@@ -30,7 +30,6 @@ def login():
 #get logged user
 @auth_bp.route('/authenticated_user')
 @jwt_required()
-
 def authenticated_user():
    current_user_id = get_jwt_identity() #current user id
 
@@ -49,3 +48,16 @@ def authenticated_user():
       }),200
 
 #logout user
+@auth_bp.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+   jwt = get_jwt()
+
+   jti = jwt['jti']
+
+   token_b = TokenBlocklist(jti=jti)
+
+   db.session.add(token_b)
+   db.session.commit()
+
+   return jsonify({"success": "Logged out successfully!"})
