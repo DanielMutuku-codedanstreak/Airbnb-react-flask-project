@@ -1,41 +1,56 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
+import Swal from 'sweetalert2';
 
 export default function Register() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    fullname: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    userType: ''
-  });
+  const {registerUser} = useContext(UserContext)
 
-  //handle change of input data
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const [name, setName] = useState('');
+  const [userType, setUserType] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [phone, setPhone] = useState('')
 
-  //handle radio button change
-  const handleRadioChange = (e) => {
-    setFormData({
-      ...formData,
-      userType: e.target.value
-    });
-  };
+  function handleSubmit(e){
+    e.preventDefault()
+    
+    if (password !== confirmPassword){
+      
+      Swal.fire({
+        icon: "error",
+        title: "error",
+        text: "Please enter matching passwords",
+     });
 
-  //handle form submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    //perform registration logic here
+    }else if (!validatePhoneNumber(phone)){
+      Swal.fire({
+        icon: "error",
+        title: "error",
+        text: "Please enter a valid phone number",
+     });
 
-    //redirect to login page after successful registration
-    navigate('/login');
-  };
+    }else{
+      registerUser(name,email ,phone,password, userType)
+
+      setName("")
+      setEmail("")
+      setPassword("")
+      setPhone("")
+      setConfirmPassword("")
+      
+    }
+  }
+  function validatePhoneNumber(phone) {
+    // Define a regular expression pattern for a simple phone number validation
+    const phoneRegex = /^\d{10}$/;
+ 
+    // Test the phone number against the regular expression
+    return phoneRegex.test(phone);
+ }
+
+
 
   return (
     <div className='container'>
@@ -47,23 +62,23 @@ export default function Register() {
             </div>
             <div className="mb-3">
               <label htmlFor="fullname" className="form-label">Full name</label>
-              <input type="text" className="form-control" name='fullname' onChange={handleChange} value={formData.fullname} required />
+              <input required type="text" className="form-control"  onChange={(e)=> setName(e.target.value)} value={name} />
             </div>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">Email address</label>
-              <input type="email" className="form-control" name='email' onChange={handleChange} value={formData.email} required />
+              <input required type="email" className="form-control"onChange={(e)=> setEmail(e.target.value)} value={email}  />
             </div>
             <div className="mb-3">
               <label htmlFor="phone" className="form-label">Phone number</label>
-              <input type="text" className="form-control" name='phone' onChange={handleChange} value={formData.phone} required />
+              <input required type="text" className="form-control" onChange={(e)=> setPhone(e.target.value)} value={phone} />
             </div>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">Password</label>
-              <input type="password" className="form-control" name='password' onChange={handleChange} value={formData.password} required />
+              <input required type="password" className="form-control" onChange={(e)=> setPassword(e.target.value)} value={password} />
             </div>
             <div className="mb-3">
               <label htmlFor="confirmPassword" className="form-label">Confirm password</label>
-              <input type="password" className="form-control" name='confirmPassword' onChange={handleChange} value={formData.confirmPassword} required />
+              <input required type="password" className="form-control" onChange={(e)=> setConfirmPassword(e.target.value)} value={confirmPassword}  />
             </div>
             <div className="mb-3">
               <label>User Type:</label>
@@ -73,8 +88,8 @@ export default function Register() {
                   className="form-check-input"
                   name="userType"
                   value="host"
-                  checked={formData.userType === 'host'}
-                  onChange={handleRadioChange}
+                  // checked={setUserType("host")}
+                  onChange={(e) => setUserType(e.target.value)}
                 />
                 <label className="form-check-label">Host</label>
               </div>
@@ -84,8 +99,8 @@ export default function Register() {
                   className="form-check-input"
                   name="userType"
                   value="guest"
-                  checked={formData.userType === 'guest'}
-                  onChange={handleRadioChange}
+                  // checked={formData.userType === 'guest'}
+                  onChange={(e) => setUserType(e.target.value)}
                 />
                 <label className="form-check-label">Guest</label>
               </div>
@@ -100,3 +115,38 @@ export default function Register() {
     </div>
   );
 }
+
+  // const [formData, setFormData] = useState({
+  //   fullname: '',
+  //   email: '',
+  //   phone: '',
+  //   password: '',
+  //   confirmPassword: '',
+  //   userType: ''
+  // });
+
+  // //handle change of input data
+  // const handleChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value
+  //   });
+  // };
+
+  // //handle radio button change
+  // const handleRadioChange = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     userType: e.target.value
+  //   });
+  // };
+
+  // //handle form submit
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   //perform registration logic here
+
+  //   //redirect to login page after successful registration
+  //   navigate('/login');
+  // };
+

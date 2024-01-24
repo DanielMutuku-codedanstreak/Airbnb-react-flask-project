@@ -43,6 +43,9 @@ export default function Login(props) {
               <p>Don't have an account? <Link to='/register'>Register here</Link></p>
             </div>
             <button type="submit" className="btn btn-primary">Login</button>
+            <div className='mt-3'>
+              <p><Link to='/forgot-password'>Forgot Password?</Link></p>
+            </div>
           </form>
         </div>
       </div>

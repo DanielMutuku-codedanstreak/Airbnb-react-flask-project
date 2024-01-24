@@ -1,6 +1,9 @@
 from flask import Flask
 from flask_migrate import Migrate
+
 from models import db,User,Property, Reservation
+
+
 
 from views import *
 from flask_jwt_extended import JWTManager
