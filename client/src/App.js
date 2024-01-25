@@ -43,7 +43,7 @@ function App() {
             <Route path='/admin' element={<Admin isLoggedIn={isLoggedIn} />} />
             <Route path='/admin/viewall' element={<ViewAllListing isLoggedIn={isLoggedIn} />} />
             <Route path='/admin/viewall/:id' element={<ViewSingleListing  />} />
-            <Route path='editproperty/:id' element={<UpdateListing />} />
+            <Route path='update_property/:id' element={<UpdateListing />} />
             <Route path='/reset_password' element={<ResetPassword />} />
             <Route path='/add_property' element={<AddListing/>} />
             <Route path='/my_property' element={<MyPropertyList/>} />
