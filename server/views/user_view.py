@@ -84,7 +84,7 @@ def delete_user():
 
 
 #update user details
-@user_bp.route('/users/<int:user_id>', methods=['PUT'])
+@user_bp.route('/user', methods=['PATCH'])
 @jwt_required()
 def update_user_details():
     user_id = get_jwt_identity() #current user id
@@ -97,18 +97,24 @@ def update_user_details():
         email = data['email']
         phone = data['phone']
 
-        check_email = User.query.filter_by(email=email).first()
-        if check_email and (check_email != user.email):
-            return jsonify({"error": f"The email: {email} already exists"}), 404  
+        if name:
+            user.name = name.title()
 
-        check_phone = User.query.filter_by(phone=phone).first()
-        if check_email and (check_email != user.phone):
-            return jsonify({"error": f"The phone: {phone} already exists"}), 404   
+        if email:
+            check_email = User.query.filter_by(email=email).first()
+            if check_email and (check_email != user.email):
+                return jsonify({"error": f"The email: {email} already exists"}), 404 
 
+            user.email = email 
+
+        if phone:
+            check_phone = User.query.filter_by(phone=phone).first()
+            if check_email and (check_email != user.phone):
+                return jsonify({"error": f"The phone: {phone} already exists"}), 404   
+            user.phone = phone
         # update the user
-        user.name = name.title()
-        user.email = email
-        user.phone = phone
+        
+        
         
         db.session.commit()
         return jsonify({"success": "User updated successfully"}), 200
