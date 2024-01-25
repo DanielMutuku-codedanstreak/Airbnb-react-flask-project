@@ -8,31 +8,31 @@ const MyBookings = () => {
 
   const handleDelete = (reservationId) => {
     deleteReservation(reservationId);
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This action cannot be undone!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, cancel it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`/reservations/${reservationId}`, {
-          method: 'DELETE',
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('Response from server:', data);
-            setBookings((prevBookings) => prevBookings.filter((booking) => booking.id !== reservationId));
-          })
-          .catch((error) => {
-            console.error('Error deleting booking:', error);
-          });
+    // Swal.fire({
+    //   title: 'Are you sure?',
+    //   text: 'This action cannot be undone!',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Yes, cancel it!',
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     fetch(`/reservations/${reservationId}`, {
+    //       method: 'DELETE',
+    //     })
+    //       .then((response) => response.json())
+    //       .then((data) => {
+    //         console.log('Response from server:', data);
+    //         setBookings((prevBookings) => prevBookings.filter((booking) => booking.id !== reservationId));
+    //       })
+    //       .catch((error) => {
+    //         console.error('Error deleting booking:', error);
+    //       });
 
-        Swal.fire('Cancelled!', 'Your reservation has been cancelled.', 'success');
-      }
-    });
+    //     Swal.fire('Cancelled!', 'Your reservation has been cancelled.', 'success');
+    //   }
+    // });
   };
 
   return (
@@ -44,8 +44,8 @@ const MyBookings = () => {
             <div key={booking.id} className="col-md-3 mb-4">
               <div className="card rounded-3" style={{ width: '100%', padding: '15px' }}>
                 <div className="card-body">
-                  <h5 className="card-title"> {booking.property.title || ''}</h5>
-                  <p className="card-text">Location: {booking.property.location || ''}</p>
+                  <h5 className="card-title"> {booking.property || ''}</h5>
+                  <p className="card-text">Location: {booking.location || ''}</p>
                   <p className="card-text">From: {booking.from || ''}</p>
                   <p className="card-text">To: {booking.to || ''}</p>
                   <p className="card-text">Total: {booking.total.toLocaleString() || ''}</p>

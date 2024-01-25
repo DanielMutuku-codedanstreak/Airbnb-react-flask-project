@@ -249,6 +249,48 @@ export default function UserProvider({children}) {
     })
    }
     
+   //change password
+
+   function changePassword( newPassword,currentPassword ){
+    fetch('/change_password',{
+        method :'POST',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`
+        },
+        body:JSON.stringify({
+            new_password:newPassword,
+            current_password:currentPassword
+        })
+
+    })
+    .then( res => res.json())
+    .then((response) => {
+        if(response.error){
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: response.error,
+                showConfirmButton: false,
+                timer: 1500
+              });
+           
+          }else{
+            
+            // setOnchange(!onchange)
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: response.success,
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+
+    })
+   }
+
+   
 
 
 
@@ -261,6 +303,7 @@ export default function UserProvider({children}) {
    logout,
    userType,
    updateCurrentuserDetails,
+   changePassword,
 
    }
   return (

@@ -41,7 +41,7 @@ export default function MyPropertyList() {
                     <div className="d-flex justify-content-between">
                     <Link to={`/update-property/${property.id}`} className="btn btn-primary">Update</Link>
                     <button className="btn btn-danger" onClick={() => handleDeleteProperty(property.id)}>Delete</button>
-                    <Link to={`/my-clients/${property.id}`} className="btn btn-success">My Clients</Link>
+                    <Link to={`/my_clients/${property.id}`} className="btn btn-success">My Clients</Link>
                     </div>
                 </div>
             </div>
