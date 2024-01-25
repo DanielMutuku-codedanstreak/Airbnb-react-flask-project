@@ -44,28 +44,32 @@ const MyBookings = () => {
     <div>
       <h2>My Bookings</h2>
       <ul>
-        {bookings.map((booking) => (
-          <li key={booking.id} className="mb-4">
-            <div>
-              <img
-                src={booking.property.propertyPhoto || booking.property.image || ''} // Adjust property photo property
-                alt={booking.property.propertyName || ''} // Adjust property name property
-                style={{ width: '150px', height: '100px', objectFit: 'cover', borderRadius: '5px' }}
-              />
-              <div className="ml-3">
-                <h4>{booking.property.propertyName || ''}</h4>
-                <p>{booking.property.propertyLocation || ''}</p>
-                <p>Check-in: {booking.from || ''}</p>
-                <p>Check-out: {booking.to || ''}</p>
-                <p>Total: {booking.total || ''}</p>
-                <p>Number of Guests: {booking.number_of_guests || ''}</p>
+        {Array.isArray(bookings) && bookings.length > 0 ? (
+          bookings.map((booking) => (
+            <li key={booking.id} className="mb-4">
+              <div>
+                <img
+                  src={booking.property.photo || booking.property.image || ''} // Adjust property photo property
+                  alt={booking.property.name || ''} // Adjust property name property
+                  style={{ width: '150px', height: '100px', objectFit: 'cover', borderRadius: '5px' }}
+                />
+                <div className="ml-3">
+                  <h4>{booking.property.name || ''}</h4>
+                  <p>{booking.property.location || ''}</p>
+                  <p>Check-in: {booking.from || ''}</p>
+                  <p>Check-out: {booking.to || ''}</p>
+                  <p>Total: {booking.total || ''}</p>
+                  <p>Number of Guests: {booking.number_of_guests || ''}</p>
+                </div>
               </div>
-            </div>
-            <button className="btn btn-danger" onClick={() => handleDelete(booking.id)}>
-              Cancel Reservation
-            </button>
-          </li>
-        ))}
+              <button className="btn btn-danger" onClick={() => handleDelete(booking.id)}>
+                Cancel Reservation
+              </button>
+            </li>
+          ))
+        ) : (
+          <p>No bookings available</p>
+        )}
       </ul>
       <Link to="/profile">
         <button className="btn btn-primary">Back to Profile</button>
