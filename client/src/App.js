@@ -19,6 +19,7 @@ import ReservationProvider from './context/ReservationContext';
 import ResetPassword from './Pages/ResetPassword';
 
 import UserProvider from './context/UserContext';
+import AddListing from './Components/AddListing';
 
 
 function App() {
@@ -40,9 +41,10 @@ function App() {
             <Route path='/mybookings' element={<MyBookings setIsLoggedIn={setIsLoggedIn} />} />
             <Route path='/admin' element={<Admin isLoggedIn={isLoggedIn} />} />
             <Route path='/admin/viewall' element={<ViewAllListing isLoggedIn={isLoggedIn} />} />
-            <Route path='/admin/viewall/:id' element={<ViewSingleListing isLoggedIn={isLoggedIn} />} />
-            <Route path='/admin/edit/:id' element={<UpdateListing isLoggedIn={isLoggedIn} />} />
-            <Route path='/reset_password' element={<ResetPassword setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path='/admin/viewall/:id' element={<ViewSingleListing  />} />
+            <Route path='editproperty/:id' element={<UpdateListing />} />
+            <Route path='/reset_password' element={<ResetPassword />} />
+            <Route path='/add_property' element={<AddListing/>} />
           </Route>
         </Routes>
       </PropertyProvider>
