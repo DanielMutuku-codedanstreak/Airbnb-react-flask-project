@@ -236,7 +236,7 @@ def delete_property(property_id):
 @prop_bp.route('/get_all_properties by user_id')  
 @jwt_required()
 def get_all_properties_by_user_id():
-   user_id = get_jwt_identity()
+   user_id = get_jwt_identity() #current user id
    properties = Property.query.filter_by(user_id=user_id).all()
 
    if not properties:

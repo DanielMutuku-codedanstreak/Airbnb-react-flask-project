@@ -23,7 +23,11 @@ const ViewProfile = () => {
         <h3>View Profile</h3>
 
         {loading ? (
-          <p>Loading user profile...</p>
+          <div class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
         ) : userProfile ? (
           <>
             <div className="mb-3">
@@ -52,9 +56,22 @@ const ViewProfile = () => {
               <label htmlFor="phone" className="form-label">Phone:</label>
               <input type="text" className="form-control" id="phone" value={userProfile.phone} disabled />
             </div>
+
+            <div className="mb-3">
+              <label htmlFor="phone" className="form-label ">
+              <div class="alert alert-danger" role="alert">
+                CAUTION deleting the account is erreversible !
+               </div>
+              </label>
+              <input type="text" className="form-control bg-danger text center text-bark fs-6 fw-semibold" id="phone" value="Delete Account" disabled />
+            </div>
           </>
         ) : (
-          <p>Error loading user profile.</p>
+          <div class="text-center">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
         )}
       </div>
     </div>
