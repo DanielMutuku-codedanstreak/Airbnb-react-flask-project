@@ -71,6 +71,7 @@ export default function AddListing() {
         })
             .then((res) => res.json())
             .then((data) => {
+                setAdded(!added)
                 setSubmittedListings(data);
                 navigate('/');
                 setFormData({
