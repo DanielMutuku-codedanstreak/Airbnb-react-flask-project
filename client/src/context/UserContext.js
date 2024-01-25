@@ -150,6 +150,10 @@ export default function UserProvider({children}) {
    function logout(){
       fetch('/logout',{
          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${authToken && authToken}`
+        }
 
      })
      .then(res => res.json())

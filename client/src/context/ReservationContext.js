@@ -6,18 +6,25 @@ export const ReservationContext = createContext();
 export default function ReservationProvider({ children }) {
   const RESERVATION_API_URL = '/reservations';
   const [reservations, setReservations] = useState([]);
-  const { navigate } = useNavigate();
+  const  navigate = useNavigate();
+  const authToken = sessionStorage.getItem('authToken');
+  const [bookings, setBookings] = useState([]);
+  const [onChange, setOnChange] = useState(false)
 
   useEffect(() => {
-    fetchReservations();
-  }, []);
+    
+    fetch(RESERVATION_API_URL,{
+      headers: {
+        "Authorization": `Bearer ${authToken && authToken}`
 
-  const fetchReservations = () => {
-    fetch(RESERVATION_API_URL)
+    
+    }})
+  
       .then((response) => response.json())
-      .then((data) => setReservations(data))
+      .then((data) => setBookings(data))
       .catch((error) => console.error('Error fetching reservations:', error));
-  };
+  
+}, [onChange]);
 
   const addReservation = (formData) => {
     const authToken = sessionStorage.getItem('authToken');
@@ -33,18 +40,32 @@ export default function ReservationProvider({ children }) {
       .then((res) => res.json())
       .then((response) => {
         if (response.success) {
-          navigate('/reservations');
-          setReservations((prevReservations) => [...prevReservations, response.data]);
+          setOnChange(!onChange)
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: response.success,
+            showConfirmButton: false,
+            timer: 1500
+            });
+            navigate('/mybookings')
         } else if (response.error) {
-          console.error('Error adding reservation:', response.error);
-        } else {
-          console.error('Something went wrong while adding the reservation.');
-        }
+          Swal.fire({
+            icon: "error",
+            title: 'error',
+            text: response.error,
+         });
+        } 
       })
       .catch((error) => {
-        console.error('Error adding reservation:', error);
+        Swal.fire({
+          icon: "error",
+          title: error,
+          text: "Something went wrong!",
+       });
       });
   };
+
 
   const deleteReservation = (id) => {
     const authToken = sessionStorage.getItem('authToken');
@@ -59,7 +80,8 @@ export default function ReservationProvider({ children }) {
       .then((res) => res.json())
       .then((response) => {
         if (response.success) {
-          navigate('/reservations');
+          // navigate('/reservations');
+          setOnChange(!onChange)
           setReservations((prevReservations) =>
             prevReservations.filter((reservation) => reservation.id !== id)
           );
@@ -78,7 +100,8 @@ export default function ReservationProvider({ children }) {
     reservations,
     addReservation,
     deleteReservation,
-    fetchReservations, // Added a function for explicit fetching
+    // fetchReservations, // Added a function for explicit fetching
+    bookings,setBookings
   };
 
   return (
