@@ -127,15 +127,15 @@ export default function UserProvider({children}) {
              navigate('/login')
             
          })
-         .catch(error => {
-            Swal.fire({
-               position: "top",
-               icon: "error",
-               title: "failed",
-               text: response.error,
-            });
+        //  .catch(error => {
+        //     Swal.fire({
+        //        position: "top",
+        //        icon: "error",
+        //        title: "failed",
+        //        text: response.error,
+        //     });
             
-         });
+        //  });
      }
    }
 
