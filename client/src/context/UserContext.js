@@ -290,6 +290,43 @@ export default function UserProvider({children}) {
     })
    }
 
+
+   // delete account
+   function deleteAccount(){
+    fetch('/user',{
+        method :'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`
+        },
+        
+    })
+    .then(res => res.json())
+    .then((response) => {
+        if(response.error){
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: response.error,
+                showConfirmButton: false,
+                timer: 1500
+              });
+           
+          }else{
+            
+            // setOnchange(!onchange)
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: response.success,
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+
+    })
+   }
+
    
 
 
@@ -304,6 +341,7 @@ export default function UserProvider({children}) {
    userType,
    updateCurrentuserDetails,
    changePassword,
+   deleteAccount,
 
    }
   return (
