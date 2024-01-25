@@ -13,6 +13,7 @@ export default function UserProvider({children}) {
    const [currentUser, setCurrentUser] = useState(null)
 
    const [loggedIn, setLoggedIn] = useState(false)
+   const [userType, setUserType] = useState()
    
    //Registration
 
@@ -188,23 +189,29 @@ export default function UserProvider({children}) {
             .then(response => {
                 if(response.email || response.username){
                     setCurrentUser(response)
+                    setUserType(response.user_type)
+
                     setLoggedIn(true)
                 }
                 else{
                     setCurrentUser(null)
+                    setLoggedIn(false)
+                    navigate('/')
                 }
             })
         }
     
 
     }, [authToken, onchange])
+    // alert(userType)
 
     const contextData = {
    registerUser,
    login,
    resetPassword,
    loggedIn,setLoggedIn,
-   logout
+   logout,
+   userType
 
    }
   return (

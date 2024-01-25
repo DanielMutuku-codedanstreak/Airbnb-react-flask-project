@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReservationContext } from '../context/ReservationContext';
+import { UserContext } from '../context/UserContext';
 
 export default function InfoListing() {
   const params = useParams();
@@ -11,6 +12,7 @@ export default function InfoListing() {
   const [listing, setListing] = useState(null);
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [numberOfNights, setNumberOfNights] = useState(0);
+  const {loggedIn} = useContext(UserContext)
 
   // Function to fetch data of one listing
   useEffect(() => {
@@ -201,9 +203,41 @@ export default function InfoListing() {
                 <div>
                   <p>Total Price: $ {price * numberOfNights}</p>
                 </div>
+                
                 <div className='d-flex gap-3'>
-                  <button type="submit" className="btn btn-primary">Book Now</button>
-                  <button type="button" className="btn btn-primary" onClick={goBack}>Go Back</button>
+                {
+                  loggedIn ? (
+                    <>
+                      <button type="submit" className="btn btn-primary">Book Now</button>
+                      <button type="button" className="btn btn-primary" onClick={goBack}>Go Back</button>
+                    </>
+                  ) : (
+                    <>
+                      <button type="button" onClick={() =>{
+                        Swal.fire({
+                          title: "Login or signup to book",
+                          showClass: {
+                            popup: `
+                              animate__animated
+                              animate__fadeInUp
+                              animate__faster
+                            `
+                          },
+                          hideClass: {
+                            popup: `
+                              animate__animated
+                              animate__fadeOutDown
+                              animate__faster
+                            `
+                          }
+                        });
+                      }} className="btn btn-primary">Book now</button>
+                      <button type="button" className="btn btn-primary" onClick={goBack}>Go Back</button>
+                    </>
+                  )
+                }
+
+                 
                 </div>
               </form>
             </div>

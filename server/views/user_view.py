@@ -46,8 +46,10 @@ def register_user():
     return jsonify({"success": "User registered successfully"}), 201
 
 #get a single user
-@user_bp.route('/users/<int:user_id>')
-def get_a_single_user(user_id):
+@user_bp.route('/user')
+@jwt_required()
+def get_a_single_user():
+    user_id = get_jwt_identity() #current user
     user = User.query.filter_by(id=user_id).first()
 
     if not user:
@@ -65,8 +67,10 @@ def get_a_single_user(user_id):
     return response
 
 #delete user
-@user_bp.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
+@user_bp.route('/user', methods=['DELETE'])
+@jwt_required()
+def delete_user():
+    user_id = get_jwt_identity() #current user id
     user = User.query.get(user_id)
 
     if user:
@@ -80,23 +84,31 @@ def delete_user(user_id):
 
 
 #update user details
-@user_bp.route('/users/<int:user_id>', methods=['PATCH'])
-def update_user(user_id):
+@user_bp.route('/users/<int:user_id>', methods=['PUT'])
+@jwt_required()
+def update_user_details():
+    user_id = get_jwt_identity() #current user id
     user = User.query.filter_by(id=user_id).first()
 
     if user:
         data = request.get_json()
-        for attr in data:
-            # if attr == 'email':
-            #     check_email = User.query.filter_by(email=data[attr]).first()
-            #     if check_email:
-            #         return jsonify({"error": f"The email: {data[attr]} already exists"}), 404
-            # if attr == 'phone':
-            #     check_phone = User.query.filter_by(phone=data[attr]).first()
-            #     if check_phone:
-            #         return jsonify({"error": f"The phone number: {data[attr]} already exists"}), 404
-            
-            setattr(user, attr, data[attr])
+
+        name = data['name']
+        email = data['email']
+        phone = data['phone']
+
+        check_email = User.query.filter_by(email=email).first()
+        if check_email and (check_email != user.email):
+            return jsonify({"error": f"The email: {email} already exists"}), 404  
+
+        check_phone = User.query.filter_by(phone=phone).first()
+        if check_email and (check_email != user.phone):
+            return jsonify({"error": f"The phone: {phone} already exists"}), 404   
+
+        # update the user
+        user.name = name.title()
+        user.email = email
+        user.phone = phone
         
         db.session.commit()
         return jsonify({"success": "User updated successfully"}), 200
