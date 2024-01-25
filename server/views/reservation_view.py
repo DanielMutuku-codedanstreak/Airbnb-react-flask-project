@@ -1,18 +1,21 @@
 from models import db,Reservation, Property
 from flask import request,jsonify ,Blueprint
 from datetime import datetime
+from flask_jwt_extended import  jwt_required, get_jwt_identity
 
 res_bp = Blueprint('res_bp',__name__)
 
 
 #add booking
 @res_bp.route('/reservations', methods=['POST'])
+@jwt_required()
 def add_reservations():
+
     try:
         data = request.get_json()
 
         # Ensure all required fields are present in the request
-        required_fields = ['check_in_date', 'check_out_date', 'number_of_guests', 'total', 'property_id', 'user_id']
+        required_fields = ['check_in_date', 'check_out_date', 'number_of_guests', 'total', 'property_id']
         for field in required_fields:
             if field not in data:
                 return jsonify({"error": f"Missing required field: {field}"}), 400
@@ -23,7 +26,7 @@ def add_reservations():
         number_of_guests = data['number_of_guests']
         total = data['total']
         property_id = data['property_id']
-        user_id = data['user_id']  # current user
+        user_id = jwt_get_identity()  # current user
 
         # Validate number of guests
         property = Property.query.filter_by(id=property_id).first()
@@ -50,6 +53,7 @@ def add_reservations():
             total=total,
             property_id=property_id,
             user_id=user_id  # current user
+
         )
 
         db.session.add(new_reservation)
@@ -63,9 +67,10 @@ def add_reservations():
 
 #view bookings
 @res_bp.route('/reservations')
+@jwt_required()
 def my_bookings():
-   # user_id=2 #current userid
-   bookings = Reservation.query.all()
+   user_id=jwt_get_identity() #current userid
+   bookings = Reservation.query.filter_by(user_id=user_id).all()
 
    if not bookings:
       return jsonify({"error":"You have no reservation history"}),404
@@ -85,8 +90,9 @@ def my_bookings():
 
 #cancel own bookings
 @res_bp.route('/reservations/<int:reservation_id>', methods=['DELETE'])
+@jwt_required()
 def cancel_reservation(reservation_id):
-   user_id = 18 #current user
+   user_id = jwt_get_identity() #current user
    booking = Reservation.query.get(reservation_id)
 
    if  booking is None:
@@ -105,6 +111,6 @@ def cancel_reservation(reservation_id):
 
 
 
-#host get all bookings on own property
+
 
 
