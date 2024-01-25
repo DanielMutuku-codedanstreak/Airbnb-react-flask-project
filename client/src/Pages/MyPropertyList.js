@@ -1,10 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { PropertyContext } from '../context/PropertyContext';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 export default function MyPropertyList() {
-  const { hostListings, deleteProperty } = useContext(PropertyContext);
+  const { hostListings, deleteProperty, fetchHostListings } = useContext(PropertyContext);
+
+  useEffect(() => {
+    // Fetch host listings when the component mounts
+    fetchHostListings();
+  }, []);
 
   const handleDeleteProperty = (id) => {
     Swal.fire({
@@ -39,7 +44,7 @@ export default function MyPropertyList() {
                     <h5 className="card-title">{property.title}</h5>
                     <p className="card-text">{property.location}</p>
                     <div className="d-flex justify-content-between">
-                    <Link to={`/update-property/${property.id}`} className="btn btn-primary">Update</Link>
+                    <Link to={`/update_property/${property.id}`} className="btn btn-primary">Update</Link>
                     <button className="btn btn-danger" onClick={() => handleDeleteProperty(property.id)}>Delete</button>
                     <Link to={`/my_clients/${property.id}`} className="btn btn-success">My Clients</Link>
                     </div>

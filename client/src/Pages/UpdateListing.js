@@ -1,191 +1,201 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import DisplayUpdatedListing from '../Components/DisplayUpdatedListing';
-import AdminHeader from '../Components/AdminHeader';
 import Swal from 'sweetalert2'
+import { PropertyContext } from '../context/PropertyContext';
 
 export default function UpdateListing(props) {
-  const params = useParams();
-  const navigate = useNavigate();
-  const [singleListing, setsingleListing] = useState(null);
-  const [formData, setFormData] = useState({
-    title: singleListing?.title || '',
-    description: singleListing?.description || '',
-    category: singleListing?.category || '',
-    image: singleListing?.image || '',
-    other_Images: singleListing?.other_Images || [],
-    price: singleListing?.price || '',
-    inclusives: singleListing?.inclusives || [],
-    amenities: singleListing?.amenities || [],
-    rules: {
-      checkin: singleListing?.rules?.checkin || '',
-      checkout: singleListing?.rules?.checkout || '',
-    },
-    capacity: singleListing?.capacity || '',
-    bathrooms: singleListing?.bathrooms || '',
-    beds: singleListing?.beds || '',
-    location: singleListing?.location || '',
-    host: {
-      name: singleListing?.host?.name || '',
-      email: singleListing?.host?.email || '',
-      phone: singleListing?.host?.phone || '',
-    },
-  })
-  //function to fetch data
-  useEffect(() => {
-    if (props.isLoggedIn) {
-      fetch(`${props.API_URL}/${params.id}`)
-      .then((res) => res.json())
-      .then((data) =>{
-        //console.log(data))
-        setsingleListing(data)
-        setFormData({
-          title: data.title || '',
-          description: data.description || '',
-          category: data.category || '',
-          image: data.image || '',
-          other_Images: data.other_Images || [],
-          price: data.price || '',
-          inclusives: data.inclusives || [],
-          amenities: data.amenities || [],
-          rules: {
-            checkin: data.rules?.checkin || '',
-            checkout: data.rules?.checkout || '',
-          },
-          capacity: data.capacity || '',
-          bathrooms: data.bathrooms || '',
-          beds: data.beds || '',
-          location: data.location || '',
-          host: {
-            name: data.host?.name || '',
-            email: data.host?.email || '',
-            phone: data.host?.phone || '',
-          },
-        })
-      })
-      .catch((error) => console.log(error));
-    }else{
-      navigate('/');
-    }
-  }, [props.API_URL, props.isLoggedIn, params.id,navigate]);
-  //function to handle change event
-  const handleChange = (e)=>{
-    const { name, value } = e.target;
-
-    if (name === 'other_Images' || name === 'inclusives' || name === 'amenities') {
-      // Split the input values based on newline
-      const arrayValues = value.split('\n');
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: arrayValues,
-      }))
-    } else if (name.startsWith('rules')) {
-        // Handle nested rules object
-        const [ruleKey, ruleProperty] = name.split('.');
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          rules: {
-            ...prevFormData.rules,
-            [ruleProperty]: value,
-          },
-        }))
-    } else if (name.startsWith('host')) {
-      // Handle nested host object
-      const hostProperty = name.split('.')[1];
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        host: {
-          ...prevFormData.host,
-          [hostProperty]: value,
+    const { getPropertyById, updateProperty } = useContext(PropertyContext);
+    const params = useParams();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        category: '',
+        image: '',
+        other_Images: [],
+        price: '',
+        inclusives: [],
+        amenities: [],
+        rules: {
+          checkin: '',
+          checkout: '',
         },
-      }))
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }))
-    }
-  }
-  // function to submit data
-  const handleSubmit = (e) =>{
-    e.preventDefault();
-    Swal.fire({
-      title: "Do you want to save the changes?",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      denyButtonText: `Don't save`
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Saved!", "", "success");
-        const submitData = JSON.stringify(formData);
-
-        fetch(`${props.API_URL}/${params.id}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: submitData,
-        })
-        .then((res) => res.json())
-        .then((data) => {
-        //console.log(data);
-        setsingleListing(data)
-        })
-        .catch((error) => {
-          console.log(`There was a problem updating the listing: ${error}`)
-          Swal.fire('Error', 'An error occurred while deleting the listing.', 'error');
-        });
-      } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
-        //reset our form
-        fetch(`${props.API_URL}/${params.id}`)
-        .then((res) => res.json())
-        .then((originalData) =>{
-          //console.log(originalData)
-          setsingleListing(originalData)
-          setFormData({
-            title: originalData.title || '',
-            description: originalData.description || '',
-            category: originalData.category || '',
-            image: originalData.image || '',
-            other_Images: originalData.other_Images || [],
-            price: originalData.price || '',
-            inclusives: originalData.inclusives || [],
-            amenities: originalData.amenities || [],
+        capacity: '',
+        bathrooms: '',
+        beds: '',
+        location: '',
+        host: {
+          name: '',
+          email: '',
+          phone: '',
+        },
+    });
+      
+    // Function to handle nested properties and handle undefined values
+    const getPropertyValue = (obj, path, defaultValue = '') => {
+        try {
+          return path.split('.').reduce((acc, key) => acc[key], obj) || defaultValue;
+        } catch (error) {
+          console.error('Error getting property value:', error);
+          return defaultValue;
+        }
+    };
+      
+    // Function to handle change event
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+      
+        if (name === 'other_Images' || name === 'inclusives' || name === 'amenities') {
+          // Split the input values based on newline
+          const arrayValues = value.split('\n');
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: arrayValues,
+          }));
+        } else if (name.startsWith('rules')) {
+          // Handle nested rules object
+          const [ruleKey, ruleProperty] = name.split('.');
+          setFormData((prevFormData) => ({
+            ...prevFormData,
             rules: {
-              checkin: originalData.rules?.checkin || '',
-              checkout: originalData.rules?.checkout || '',
+              ...prevFormData.rules,
+              [ruleProperty]: value,
             },
-            capacity: originalData.capacity || '',
-            bathrooms: originalData.bathrooms || '',
-            beds: originalData.beds || '',
-            location: originalData.location || '',
+          }));
+        } else if (name.startsWith('host')) {
+          // Handle nested host object
+          const hostProperty = name.split('.')[1];
+          setFormData((prevFormData) => ({
+            ...prevFormData,
             host: {
-              name: originalData.host?.name || '',
-              email: originalData.host?.email || '',
-              phone: originalData.host?.phone || '',
+              ...prevFormData.host,
+              [hostProperty]: value,
             },
-          })
-        })
-        .catch((error) => console.log(error));
-      }else {
-        Swal.fire("Action was canceled", "", "info");
-        //nothing happens
-      }
-    })
-  }
-  //function to navigate back
-  const goBack =()=>{
-    navigate(-1)
-  }
+          }));
+        } else {
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+          }));
+        }
+    };
+
+    // Function to handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        Swal.fire({
+        title: 'Do you want to save the changes?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        denyButtonText: `Don't save`,
+        }).then(async (result) => {
+        if (result.isConfirmed) {
+            try {
+            setLoading(true);
+            await updateProperty(params.id, formData);
+            Swal.fire('Saved!', '', 'success');
+            } catch (error) {
+            console.log(`There was a problem updating the listing: ${error}`);
+            Swal.fire('Error', 'An error occurred while updating the listing.', 'error');
+            } finally {
+            setLoading(false);
+            }
+        } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info');
+            // Reset the form data
+            try {
+                const updatedData = await getPropertyById(params.id);
+                if (updatedData) {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    title: updatedData.title || '',
+                    description: updatedData.description || '',
+                    category: updatedData.category || '',
+                    image: updatedData.image || '',
+                    other_Images: updatedData.other_images || [],
+                    price: updatedData.price || '',
+                    inclusives: updatedData.inclusives || [],
+                    amenities: updatedData.amenities || [],
+                    rules: {
+                      checkin: updatedData.rules?.checkin || '',
+                      checkout: updatedData.rules?.checkout || '',
+                    },
+                    capacity: updatedData.capacity || '',
+                    bathrooms: updatedData.bathrooms || '',
+                    beds: updatedData.beds || '',
+                    location: updatedData.location || '',
+                    host: {
+                      name: updatedData.host?.name || '',
+                      email: updatedData.host?.email || '',
+                      phone: updatedData.host?.phone || '',
+                    },
+                  }));
+                }
+            } catch (error) {
+                console.error('Error resetting form data:', error);
+            }
+        } else {
+            Swal.fire('Action was canceled', '', 'info');
+            // Nothing happens
+        }
+        });
+    };
+    
+    
+    // Use the getPropertyValue function to handle undefined values when populating the form
+    useEffect(() => {
+        const fetchProperty = async () => {
+          try {
+            const data = await getPropertyById(params.id);
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              title: getPropertyValue(data, 'title'),
+              description: getPropertyValue(data, 'description'),
+              category: getPropertyValue(data, 'category'),
+              image: getPropertyValue(data, 'image'),
+              other_Images: getPropertyValue(data, 'other_images', []),
+              price: getPropertyValue(data, 'price'),
+              inclusives: getPropertyValue(data, 'inclusives', []),
+              amenities: getPropertyValue(data, 'amenities', []),
+              rules: {
+                checkin: getPropertyValue(data, 'rules.checkin'),
+                checkout: getPropertyValue(data, 'rules.checkout'),
+              },
+              capacity: getPropertyValue(data, 'capacity'),
+              bathrooms: getPropertyValue(data, 'bathrooms'),
+              beds: getPropertyValue(data, 'beds'),
+              location: getPropertyValue(data, 'location'),
+              host: {
+                name: getPropertyValue(data, 'host.name'),
+                email: getPropertyValue(data, 'host.email'),
+                phone: getPropertyValue(data, 'host.phone'),
+              },
+            }));
+          } catch (error) {
+            console.log(error);
+          }
+        };
+      
+        fetchProperty();
+    }, [params.id, getPropertyById]);
+      
+  
+    const goBack = () => {
+      navigate(-1);
+    };
+  
+    if (!formData || loading) {
+        // Render loading state or handle appropriately
+        return <div>Loading...</div>;
+    }
 
   return (
   <div id="addSection">
     <div className="container mt-5">
-      <AdminHeader></AdminHeader>
         <div className="listingContainer row">
-            {/*Add Listing Form (Left Side)*/}
+            
             <div className="col-md-6">
                 <form id="addListingForm" className="mb-4" onSubmit={handleSubmit}>
                     <h2>Update Listing</h2>
@@ -287,15 +297,9 @@ export default function UpdateListing(props) {
                     </div>
                 </form>
             </div>
-            {/* Display Added Listings Section (Right Side)*/}
             <div className="col-md-6">
                 
             </div>
-        </div>
-        <div id="AddListingsSection">
-            <h2 className='mb-3'>Listings</h2>
-            {/* Added listing will be displayed here */}
-            <DisplayUpdatedListing singleListing={singleListing}></DisplayUpdatedListing>
         </div>
     </div>
 </div>

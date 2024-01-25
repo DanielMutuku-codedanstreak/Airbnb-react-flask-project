@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import DisplayAddedListing from './DisplayAddedListing';
+import React, { useState, useContext } from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { PropertyContext } from '../context/PropertyContext';
 
 export default function AddListing() {
-    const navigate = useNavigate()
-    const [submittedListings, setSubmittedListings] = useState([]);
-    const [added, setAdded] = useState(false);
+    const navigate = useNavigate();
+    const propertyContext = useContext(PropertyContext);
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -17,8 +17,8 @@ export default function AddListing() {
         inclusives: [],
         amenities: [],
         rules: {
-            checkin: '',
-            checkout: ''
+        checkin: '',
+        checkout: '',
         },
         capacity: '',
         bathrooms: '',
@@ -31,78 +31,51 @@ export default function AddListing() {
         const { name, value } = e.target;
 
         if (name === 'other_images' || name === 'inclusives' || name === 'amenities') {
-            // Split the input values based on newline
-            const arrayValues = value.split('\n');
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                [name]: arrayValues,
-            }));
+        // Split the input values based on newline
+        const arrayValues = value.split('\n');
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: arrayValues,
+        }));
         } else if (name.startsWith('rules')) {
-            // Handle nested rules object
-            const [ruleKey, ruleProperty] = name.split('.');
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                rules: {
-                    ...prevFormData.rules,
-                    [ruleProperty]: value,
-                },
-            }));
+        // Handle nested rules object
+        const [ruleKey, ruleProperty] = name.split('.');
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            rules: {
+            ...prevFormData.rules,
+            [ruleProperty]: value,
+            },
+        }));
         } else {
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                [name]: value,
-            }));
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
         }
     };
 
     // Function to handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const submitData = JSON.stringify(formData);
-        const authToken = sessionStorage.getItem("authToken")
 
-        fetch('/properties', {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": `Bearer ${authToken && authToken}`
-            },
-            body: submitData,
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setAdded(!added)
-                setSubmittedListings(data);
-                navigate('/');
-                setFormData({
-                    title: '',
-                    description: '',
-                    category: '',
-                    image: '',
-                    other_images: [],
-                    price: '',
-                    inclusives: [],
-                    amenities: [],
-                    rules: {
-                        checkin: '',
-                        checkout: '',
-                    },
-                    capacity: '',
-                    bathrooms: '',
-                    beds: '',
-                    location: '',
-                });
+        try {
+        const data = await propertyContext.addProperty(formData);
+
 
                 Swal.fire({
                     title: 'success',
                     text: 'Property added successfully',
                     icon: 'success',
                 });
-            })
-            .catch((error) => {
-                console.log(`There was a problem adding a listing,${error}`);
-                Swal.fire('Error', 'An error occurred while adding the listing.', 'error');
-            });
+           
+           navigate('/');
+        } catch (error) {
+        // Handle error
+        console.log('Error adding property:', error);
+        Swal.fire('Error', 'An error occurred while adding the property.', 'error');
+        }
+
     };
 
   return (
