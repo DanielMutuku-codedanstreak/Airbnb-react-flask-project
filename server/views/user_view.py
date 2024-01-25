@@ -87,14 +87,14 @@ def update_user(user_id):
     if user:
         data = request.get_json()
         for attr in data:
-            if attr == 'email':
-                check_email = User.query.filter_by(email=data[attr]).first()
-                if check_email:
-                    return jsonify({"error": f"The email: {data[attr]} already exists"}), 404
-            if attr == 'phone':
-                check_phone = User.query.filter_by(phone=data[attr]).first()
-                if check_phone:
-                    return jsonify({"error": f"The phone number: {data[attr]} already exists"}), 404
+            # if attr == 'email':
+            #     check_email = User.query.filter_by(email=data[attr]).first()
+            #     if check_email:
+            #         return jsonify({"error": f"The email: {data[attr]} already exists"}), 404
+            # if attr == 'phone':
+            #     check_phone = User.query.filter_by(phone=data[attr]).first()
+            #     if check_phone:
+            #         return jsonify({"error": f"The phone number: {data[attr]} already exists"}), 404
             
             setattr(user, attr, data[attr])
         
