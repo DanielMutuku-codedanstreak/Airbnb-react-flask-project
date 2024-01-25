@@ -20,7 +20,7 @@ export default function InfoListing() {
       .catch((error) => console.log(error));
   }, [params.id]);
 
-  // Loading feature as we await the listing to load
+  // Loading feature as we await listing to load
   if (!listing) {
     return <div>Loading...</div>;
   }
@@ -65,16 +65,13 @@ export default function InfoListing() {
       return;
     }
 
+    // Format dates to match server expectations (assuming server expects "yyyy-mm-dd" format)
+    const formattedCheckInDate = new Date(checkInDate).toISOString().split('T')[0];
+    const formattedCheckOutDate = new Date(checkOutDate).toISOString().split('T')[0];
+
     // Calculate the number of nights
-    const startDate = new Date(checkInDate);
-    const endDate = new Date(checkOutDate);
-
-    if (startDate >= endDate) {
-      console.error('Invalid date range. Check-out date should be after check-in date.');
-      // You might want to provide user feedback here
-      return;
-    }
-
+    const startDate = new Date(formattedCheckInDate);
+    const endDate = new Date(formattedCheckOutDate);
     const numberOfNights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
     setNumberOfNights(numberOfNights);
 
@@ -89,11 +86,21 @@ export default function InfoListing() {
     // Calculate the total price based on the number of nights
     const totalPrice = price * numberOfNights;
 
+    // Assuming you have a function to get the user_id from your context or state
+    //const userId = getUserId(); // Implement this function as per your app's context
+    const userId = 1
+
+    // Obtain property_id from useParams
+    const { id: propertyId } = params;
+
+    // Include user_id in the request payload
     const requestBody = {
-      check_in_date: checkInDate,
-      check_out_date: checkOutDate,
-      numberOfGuests,
-      totalPrice,
+      check_in_date: formattedCheckInDate,
+      check_out_date: formattedCheckOutDate,
+      number_of_guests: numberOfGuests,
+      total: totalPrice,
+      property_id: propertyId,
+      user_id: userId, // Include user_id in the payload
       // Add other form fields to the request body
     };
 
