@@ -8,7 +8,7 @@ export default function PropertyProvider({ children }) {
   const [allListings, setAllListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState('');
-  const [onUpdate, setOnUpdate] = useState(true)
+  // const [onUpdate, setOnUpdate] = useState(true)
 
   useEffect(() => {
     fetch(PROPERTY_API_URL)
@@ -17,7 +17,7 @@ export default function PropertyProvider({ children }) {
         setAllListings(data);
       })
       .catch((error) => console.log(`Error fetching listings data, ${error}`));
-  }, [searchTerm][onUpdate]);
+  }, [searchTerm]);
 
   const updateSearchTerm = (term) => {
     setSearchTerm(term);
