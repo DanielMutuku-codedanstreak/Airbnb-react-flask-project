@@ -47,17 +47,16 @@ def authenticated_user():
          "user_type":user.user_type
       }),200
 
-#logout user
-@auth_bp.route('/logout', methods=['POST'])
+# Logout user
+@auth_bp.route("/logout", methods=["POST"])
 @jwt_required()
 def logout():
-   jwt = get_jwt()
+    jwt = get_jwt()
 
-   jti = jwt['jti']
+    jti = jwt['jti']
 
-   token_b = TokenBlocklist(jti=jti)
+    token_b = TokenBlocklist(jti=jti)
+    db.session.add(token_b)
+    db.session.commit()
 
-   db.session.add(token_b)
-   db.session.commit()
-
-   return jsonify({"success": "Logged out successfully!"})
+    return jsonify({"success": "Logged out successfully!"}), 200

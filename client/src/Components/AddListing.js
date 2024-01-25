@@ -59,11 +59,13 @@ export default function AddListing() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const submitData = JSON.stringify(formData);
+        const authToken = sessionStorage.getItem("authToken")
 
         fetch('/properties', {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json',
+                "Authorization": `Bearer ${authToken && authToken}`
             },
             body: submitData,
         })
