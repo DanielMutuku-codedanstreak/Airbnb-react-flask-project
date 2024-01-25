@@ -26,7 +26,7 @@ def add_reservations():
         number_of_guests = data['number_of_guests']
         total = data['total']
         property_id = data['property_id']
-        user_id = jwt_get_identity()  # current user
+        user_id = get_jwt_identity()  # current user
 
         # Validate number of guests
         property = Property.query.filter_by(id=property_id).first()
@@ -69,7 +69,7 @@ def add_reservations():
 @res_bp.route('/reservations')
 @jwt_required()
 def my_bookings():
-   user_id=jwt_get_identity() #current userid
+   user_id=get_jwt_identity() #current userid
    bookings = Reservation.query.filter_by(user_id=user_id).all()
 
    if not bookings:
@@ -92,7 +92,7 @@ def my_bookings():
 @res_bp.route('/reservations/<int:reservation_id>', methods=['DELETE'])
 @jwt_required()
 def cancel_reservation(reservation_id):
-   user_id = jwt_get_identity() #current user
+   user_id = get_jwt_identity() #current user
    booking = Reservation.query.get(reservation_id)
 
    if  booking is None:
