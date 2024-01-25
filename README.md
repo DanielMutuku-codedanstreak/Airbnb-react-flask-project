@@ -73,9 +73,13 @@ search functionality and booking system.
 
 ## Technologies used
 - HTML
-- CSS AND Bootstrap
+- CSS 
+- Bootstrap
 - React
 - Flask
+- SweetAlert
+
+
 
 ## Support and Contact details
 - Email: ianmwng@gmail.com
