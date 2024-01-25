@@ -145,7 +145,7 @@ def add_property():
           image=image,
           other_images=other_images,
           price=price,
-          category=category,
+          category=category.title(),
           inclusives=inclusives,
           amenities=amenities,
           rules=rules,

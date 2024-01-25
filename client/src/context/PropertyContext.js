@@ -10,8 +10,14 @@ export default function PropertyProvider({ children }) {
   const [hostListings, setHostListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchError, setSearchError] = useState('');
-  const [onChange, setOnChange] = useState(false);
+
+
   const [loading, setLoading] = useState(true);
+
+  const [onChange, setOnChange] = useState(false)
+  const [onAdd, setOnAdd] = useState(false)
+  // const [onUpdate, setOnUpdate] = useState(true)
+
 
   useEffect(() => {
     fetch(PROPERTY_API_URL)
