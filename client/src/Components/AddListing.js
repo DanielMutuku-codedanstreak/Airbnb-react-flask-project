@@ -207,11 +207,9 @@ export default function AddListing() {
                       
                         <button type="submit" className="btn btn-primary">Add Property</button>
                     </form>
-                </div>
-                
 
-                
-               
+                </div>         
+
                 
             </div>
             

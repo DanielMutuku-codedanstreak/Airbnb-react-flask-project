@@ -176,9 +176,9 @@ export default function UpdateListing(props) {
     })
   }
   //function to navigate back
-  // const goBack =()=>{
-  //   navigate(-1)
-  // }
+  const goBack =()=>{
+    navigate(-1)
+  }
 
   return (
   <div id="addSection">
