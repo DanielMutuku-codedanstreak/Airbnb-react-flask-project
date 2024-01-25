@@ -133,7 +133,7 @@ def add_property():
     beds = data['beds']
     location = data['location']
     
-    user_id= jwt_get_identity()             #current user id  jwt_get_required
+    user_id= get_jwt_identity()             #current user id  jwt_get_required
 
     user=User.query.filter_by(id=user_id).first()
     if user.user_type == 'guest':
@@ -197,7 +197,7 @@ def add_property():
 def update_property(property_id):
     property = Property.query.filter_by(id=property_id).first()
 
-    user_id = jwt_get_identity()                   #current user id
+    user_id = get_jwt_identity()                   #current user id
 
 
     if property.user_id == user_id:
@@ -236,7 +236,7 @@ def delete_property(property_id):
 @prop_bp.route('/get_all_properties by user_id')  
 @jwt_required()
 def get_all_properties_by_user_id():
-   user_id = jwt_get_identity()
+   user_id = get_jwt_identity()
    properties = Property.query.filter_by(user_id=user_id).all()
 
    if not properties:

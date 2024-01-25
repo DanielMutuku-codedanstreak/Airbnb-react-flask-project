@@ -61,7 +61,7 @@ export default function AddListing() {
         const submitData = JSON.stringify(formData);
 
         fetch('/properties', {
-            method: 'POST', // Corrected method
+            method: 'POST', 
             headers: {
                 'Content-Type': 'application/json',
             },
