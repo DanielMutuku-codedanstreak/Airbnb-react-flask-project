@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { ReservationContext } from '../context/ReservationContext';
 
 const MyBookings = () => {
-  const [bookings, setBookings] = useState([]);
+  const {bookings, setBookings,deleteReservation} = useContext(ReservationContext)
 
-  useEffect(() => {
-    fetch('/reservations')
-      .then((response) => response.json())
-      .then((data) => setBookings(data))
-      .catch((error) => console.error('Error fetching bookings:', error));
-  }, []);
+
 
   const handleDelete = (reservationId) => {
+    deleteReservation(reservationId)
     Swal.fire({
       title: 'Are you sure?',
       text: 'This action cannot be undone!',

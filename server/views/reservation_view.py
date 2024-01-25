@@ -78,6 +78,7 @@ def my_bookings():
       return jsonify([{
          "id":booking.id,
          "property":booking.property.title,
+         "image":booking.property.image,
          "from":booking.check_in_date,
          "to":booking.check_out_date,
          "total":booking.total,
@@ -96,10 +97,10 @@ def cancel_reservation(reservation_id):
    booking = Reservation.query.get(reservation_id)
 
    if  booking is None:
-      return jsonify({"error":"You have no reservations"})
+      return jsonify({"error":"You have no reservations"}),404
 
    if booking.user_id != user_id:
-      return jsonify({"error":"Validation error"})
+      return jsonify({"error":"Validation error"}),405
 
 
   
@@ -107,7 +108,7 @@ def cancel_reservation(reservation_id):
       db.session.delete(booking)
       db.session.commit()
 
-      return jsonify({"success":"reservation canceled successfully"})
+      return jsonify({"success":"reservation canceled successfully"}),200
 
 
 
