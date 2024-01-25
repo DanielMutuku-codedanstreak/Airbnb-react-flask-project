@@ -1,32 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 const UpdateProfile = () => {
   const [updatedDetails, setUpdatedDetails] = useState({
-    profilePhoto: null,
+    name: '',
     email: '',
     phone: '',
   });
 
+  useEffect(() => {
+    fetch('/users/51')
+      .then((response) => response.json())
+      .then((data) => {
+        setUpdatedDetails({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+        });
+      })
+      .catch((error) => {
+        console.error('Error fetching user profile:', error);
+      });
+  }, []);
+
   const handleChange = (e) => {
-    if (e.target.type === 'file') {
-      //handle profile photo upload
-      setUpdatedDetails({
-        ...updatedDetails,
-        profilePhoto: e.target.files[0],
-      });
-    } else {
-      //handle text inputs(email and phone)
-      setUpdatedDetails({
-        ...updatedDetails,
-        [e.target.name]: e.target.value,
-      });
-    }
+    setUpdatedDetails((prevDetails) => ({
+      ...prevDetails,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //logic to update details
-    console.log('Updated Details:', updatedDetails);
+
+    fetch('/users/51', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedDetails),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Response from server:', data);
+
+        if (data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'User updated successfully',
+          });
+
+          
+        } else {
+        
+          Swal.fire({
+            icon: 'error',
+            title: 'Error updating user',
+            text: data.error || 'Failed to update user',
+          });
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating user profile:', error);
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to update user',
+        });
+      });
   };
 
   return (
@@ -35,8 +77,8 @@ const UpdateProfile = () => {
         <h3 className="text-center">Update Profile</h3>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="profilePhoto" className="form-label">Profile Photo:</label>
-            <input type="file" className="form-control" name="profilePhoto" onChange={handleChange} />
+            <label htmlFor="name" className="form-label">Name:</label>
+            <input type="text" className="form-control" name="name" onChange={handleChange} value={updatedDetails.name} />
           </div>
 
           <div className="mb-3">
