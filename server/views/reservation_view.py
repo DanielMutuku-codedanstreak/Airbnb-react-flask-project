@@ -6,59 +6,64 @@ from flask_jwt_extended import  jwt_required, get_jwt_identity
 res_bp = Blueprint('res_bp',__name__)
 
 
-#add a booking
+#add booking
 @res_bp.route('/reservations', methods=['POST'])
 @jwt_required()
 def add_reservations():
-   
-    data = request.get_json()
 
-    # Ensure all required fields are present in the request
-    required_fields = ['check_in_date', 'check_out_date', 'number_of_guests', 'total', 'property_id']
-    for field in required_fields:
-        if field not in data:
-            return jsonify({"error": f"Missing required field: {field}"}), 400
+    try:
+        data = request.get_json()
 
-    check_in_date = datetime.strptime(data['check_in_date'], "%Y-%m-%d")
-    check_out_date = datetime.strptime(data['check_out_date'], "%Y-%m-%d")
+        # Ensure all required fields are present in the request
+        required_fields = ['check_in_date', 'check_out_date', 'number_of_guests', 'total', 'property_id']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": f"Missing required field: {field}"}), 400
 
-    number_of_guests = data['number_of_guests']
-    total = data['total']
-    property_id = data['property_id']
-    user_id = jwt_get_identity()  # current user
+        check_in_date = datetime.strptime(data['check_in_date'], "%Y-%m-%d")
+        check_out_date = datetime.strptime(data['check_out_date'], "%Y-%m-%d")
 
-    # Validate number of guests
-    property = Property.query.filter_by(id=property_id).first()
-    if number_of_guests > property.capacity:
-        return jsonify({"error": f"The property can accommodate a maximum of {property.capacity} guests"}), 404
+        number_of_guests = data['number_of_guests']
+        total = data['total']
+        property_id = data['property_id']
+        user_id = jwt_get_identity()  # current user
 
-    # Check for reservation conflicts
-    conflicting_reservation = Reservation.query.filter(
-        (Reservation.property_id == property_id) &
-        (
-            (Reservation.check_in_date <= check_in_date) & (Reservation.check_out_date >= check_in_date) |
-            (Reservation.check_in_date <= check_out_date) & (Reservation.check_out_date >= check_out_date) |
-            (check_in_date <= Reservation.check_in_date) & (check_out_date >= Reservation.check_in_date)
+        # Validate number of guests
+        property = Property.query.filter_by(id=property_id).first()
+        if number_of_guests > property.capacity:
+            return jsonify({"error": f"The property can accommodate a maximum of {property.capacity} guests"}), 400
+
+        # Check for reservation conflicts
+        conflicting_reservation = Reservation.query.filter(
+            (Reservation.property_id == property_id) &
+            (
+                (Reservation.check_in_date <= check_in_date) & (Reservation.check_out_date >= check_in_date) |
+                (Reservation.check_in_date <= check_out_date) & (Reservation.check_out_date >= check_out_date) |
+                (check_in_date <= Reservation.check_in_date) & (check_out_date >= Reservation.check_in_date)
+            )
+        ).first()
+
+        if conflicting_reservation:
+            return jsonify({"error": "Reservation already exists"}), 409
+
+        new_reservation = Reservation(
+            check_in_date=check_in_date,
+            check_out_date=check_out_date,
+            number_of_guests=number_of_guests,
+            total=total,
+            property_id=property_id,
+            user_id=user_id  # current user
+
         )
-    ).first()
 
-    if conflicting_reservation:
-        return jsonify({"error": "Reservation already exists"}), 404
+        db.session.add(new_reservation)
+        db.session.commit()
 
-    
-    new_reservation = Reservation(
-        check_in_date=check_in_date,
-        check_out_date=check_out_date,
-        number_of_guests=number_of_guests,
-        total=total,
-        property_id=property_id,
-        user_id=user_id  # current user
-    )
+        return jsonify({"success": "Reservation added successfully"}), 201
 
-    db.session.add(new_reservation)
-    db.session.commit()
-
-    return jsonify({"success": "Reservation added successfully"}),201
+    except Exception as e:
+        # Handle database or other exceptions
+        return jsonify({"error": f"Failed to add reservation. {str(e)}"}), 500
 
 #view bookings
 @res_bp.route('/reservations')

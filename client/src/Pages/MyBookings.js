@@ -1,16 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
 
-  // useEffect(() => {
-  //   //fetch bookings data
-  //   fetch('')
-  //     .then((response) => response.json())
-  //     .then((data) => setBookings(data))
-  //     .catch((error) => console.error('Error fetching bookings:', error));
-  // }, []);
+  useEffect(() => {
+    fetch('/reservations')
+      .then((response) => response.json())
+      .then((data) => setBookings(data))
+      .catch((error) => console.error('Error fetching bookings:', error));
+  }, []);
+
+  const handleDelete = (reservationId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This action cannot be undone!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, cancel it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`/reservations/${reservationId}`, {
+          method: 'DELETE',
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Response from server:', data);
+            setBookings((prevBookings) => prevBookings.filter((booking) => booking.id !== reservationId));
+          })
+          .catch((error) => {
+            console.error('Error deleting booking:', error);
+          });
+
+        Swal.fire('Cancelled!', 'Your reservation has been cancelled.', 'success');
+      }
+    });
+  };
 
   return (
     <div>
@@ -18,17 +46,24 @@ const MyBookings = () => {
       <ul>
         {bookings.map((booking) => (
           <li key={booking.id} className="mb-4">
-            <Link to={`/airbnb/${booking.id}`}>
+            <div>
               <img
-                src={booking.propertyPhoto}
-                alt={booking.propertyName}
+                src={booking.property.propertyPhoto || booking.property.image || ''} // Adjust property photo property
+                alt={booking.property.propertyName || ''} // Adjust property name property
                 style={{ width: '150px', height: '100px', objectFit: 'cover', borderRadius: '5px' }}
               />
               <div className="ml-3">
-                <h4>{booking.propertyName}</h4>
-                <p>{booking.propertyLocation}</p>
+                <h4>{booking.property.propertyName || ''}</h4>
+                <p>{booking.property.propertyLocation || ''}</p>
+                <p>Check-in: {booking.from || ''}</p>
+                <p>Check-out: {booking.to || ''}</p>
+                <p>Total: {booking.total || ''}</p>
+                <p>Number of Guests: {booking.number_of_guests || ''}</p>
               </div>
-            </Link>
+            </div>
+            <button className="btn btn-danger" onClick={() => handleDelete(booking.id)}>
+              Cancel Reservation
+            </button>
           </li>
         ))}
       </ul>
