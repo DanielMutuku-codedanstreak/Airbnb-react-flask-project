@@ -61,13 +61,11 @@ export default function AddListing() {
 
         try {
         const data = await propertyContext.addProperty(formData);
-
-
-                Swal.fire({
-                    title: 'success',
-                    text: 'Property added successfully',
-                    icon: 'success',
-                });
+            Swal.fire({
+                title: 'success',
+                text: 'Property added successfully',
+                icon: 'success',
+            });
            
            navigate('/');
         } catch (error) {
