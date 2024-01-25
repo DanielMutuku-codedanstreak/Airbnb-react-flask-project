@@ -10,6 +10,7 @@ export default function ReservationProvider({ children }) {
   const authToken = sessionStorage.getItem('authToken');
   const [bookings, setBookings] = useState([]);
   const [onChange, setOnChange] = useState(false)
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     
@@ -69,7 +70,7 @@ export default function ReservationProvider({ children }) {
 
   const deleteReservation = (id) => {
     const authToken = sessionStorage.getItem('authToken');
-
+  
     fetch(`${RESERVATION_API_URL}/${id}`, {
       method: 'DELETE',
       headers: {
@@ -80,28 +81,50 @@ export default function ReservationProvider({ children }) {
       .then((res) => res.json())
       .then((response) => {
         if (response.success) {
-          // navigate('/reservations');
-          setOnChange(!onChange)
+          // Reservation deleted successfully
+          setOnChange(!onChange);
           setReservations((prevReservations) =>
             prevReservations.filter((reservation) => reservation.id !== id)
           );
+  
+          
+          Swal.fire('Deleted!', 'Your reservation has been deleted.', 'success');
         } else if (response.error) {
+          
           console.error('Error deleting reservation:', response.error);
+  
+         
+          Swal.fire('Error', 'An error occurred while deleting the reservation.', 'error');
         } else {
+          
           console.error('Something went wrong while deleting the reservation.');
+  
+          
+          Swal.fire('Error', 'Something went wrong. Please try again later.', 'error');
         }
       })
       .catch((error) => {
+        
         console.error('Error deleting reservation:', error);
+  
+        
+        Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
       });
   };
+
+
+
+    
+
+  
 
   const contextData = {
     reservations,
     addReservation,
     deleteReservation,
     // fetchReservations, // Added a function for explicit fetching
-    bookings,setBookings
+    bookings,setBookings,
+    // clients
   };
 
   return (

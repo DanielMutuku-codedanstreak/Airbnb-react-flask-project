@@ -1,6 +1,6 @@
 from models import db,User
 from flask import request,jsonify ,Blueprint
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash,check_password_hash
 from flask_jwt_extended import  jwt_required, get_jwt_identity
 
 
@@ -144,3 +144,32 @@ def reset_password():
     db.session.commit()
 
     return jsonify({"success": "Password changed successfully"}), 200
+
+
+#change password
+@user_bp.route('/change_password', methods=['POST'])
+@jwt_required()
+def change_password():
+    user_id = get_jwt_identity()  # current user id
+
+    data = request.get_json()
+
+    current_password = data['current_password']
+    new_password = data['new_password']
+
+    if not current_password or not new_password:
+        return jsonify({"error": "Both current password and new password are required"}), 400
+
+    user = User.query.filter_by(id=user_id).first()
+
+   
+    
+    if user:
+        if check_password_hash(user.password, current_password):
+            user.password = generate_password_hash(new_password)
+            db.session.commit()
+            return jsonify({"success":"password changed"}),201
+
+        return jsonify({"error":"Wrong current password!"}),404
+        
+

@@ -110,7 +110,29 @@ def cancel_reservation(reservation_id):
 
       return jsonify({"success":"reservation canceled successfully"}),200
 
+#get my clients
+@res_bp.route('/clients/<int:property_id>')
+@jwt_required()
+def get_my_clients(property_id):
+    # user_id = get_jwt_identity() #current user id
 
+    reservations = Reservation.query.filter_by(property_id = property_id).all()
+
+    if not reservations:
+        return jsonify({"error":"You've had no clients on this property."}),404
+    
+    if reservations:
+        return jsonify([
+            {
+                "name": reservation.user.name,
+                "email": reservation.user.email,
+                "phone": reservation.user.phone,
+                "from": reservation.check_in_date,
+                "to": reservation.check_out_date,
+                "total": reservation.total
+
+            }for reservation in reservations
+        ]),200
 
 
 
