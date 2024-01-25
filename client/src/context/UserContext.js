@@ -1,6 +1,6 @@
 import React, { createContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import Swal from 'sweetalert2'
 
 export const UserContext = createContext()
@@ -8,6 +8,10 @@ export const UserContext = createContext()
 export default function UserProvider({children}) {
 
    const navigate = useNavigate()
+   const [onchange, setOnchange] = useState(false)
+   const [authToken, setAuthToken] = useState(()=> sessionStorage.getItem("authToken")? sessionStorage.getItem("authToken"): null )
+   const [currentUser, setCurrentUser] = useState(null)
+
    const [loggedIn, setLoggedIn] = useState(false)
    
    //Registration
@@ -58,7 +62,8 @@ export default function UserProvider({children}) {
         fetch("/login",{
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+
             },
             body: JSON.stringify({email,password })
 
@@ -69,29 +74,30 @@ export default function UserProvider({children}) {
             
             if (response.access_token)
             {
+                sessionStorage.setItem("authToken", response.access_token);
+                setAuthToken(response.access_token)
+                setLoggedIn(true)
+
                 navigate("/")
                 Swal.fire({
-                position: "top-end",
+                position: "center",
                 icon: "success",
                 title: "Login success",
                 showConfirmButton: false,
                 timer: 1500
                 });
-                setLoggedIn(true)
-                
+
+                setOnchange(!onchange)
             }
             else{
                 Swal.fire({
-                    position: "top-end",
+                    position: "center",
                     icon: "error",
                     title: response.error,
                     showConfirmButton: false,
                     timer: 1500
                     });
-                    
             }
-
-            console.log(response)
 
 
         })
@@ -155,7 +161,7 @@ export default function UserProvider({children}) {
          showConfirmButton: false,
          timer: 1500
          });
-         navigate('/login')
+         navigate('/')
          setLoggedIn(false)
          
      })
@@ -163,6 +169,31 @@ export default function UserProvider({children}) {
      setLoggedIn(false)
      navigate('/')
    }
+    // Get Authenticated user
+    useEffect(()=>{
+        if(authToken)
+        {
+            fetch("/authenticated_user",{
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${authToken}`
+            }
+            })
+            .then(res => res.json())
+            .then(response => {
+                if(response.email || response.username){
+                    setCurrentUser(response)
+                    setLoggedIn(true)
+                }
+                else{
+                    setCurrentUser(null)
+                }
+            })
+        }
+    
+
+    }, [authToken, onchange])
 
     const contextData = {
    registerUser,
