@@ -7,6 +7,7 @@ const ViewProfile = () => {
 
  function handleDelete(){
   deleteAccount()
+ 
  }
 
   return (
@@ -55,7 +56,7 @@ const ViewProfile = () => {
                 CAUTION deleting the account is irreversible !
                </div>
               </label>
-              <input type="button" onClick={handleDelete} className="form-control bg-danger text-center text-bark fs-6 fw-semibold" id="phone" value="Delete Account" disabled />
+              <input type="submit" onClick={() => handleDelete()} className="form-control bg-danger text-center text-bark fs-6 fw-semibold" id="phone" value="Delete Account"  />
             </div>
           </>
         ) : (

@@ -303,6 +303,7 @@ export default function UserProvider({children}) {
     })
     .then(res => res.json())
     .then((response) => {
+        console.log(response)
         if(response.error){
             Swal.fire({
                 position: "top-end",
@@ -314,7 +315,9 @@ export default function UserProvider({children}) {
            
           }else{
             
-            // setOnchange(!onchange)
+            navigate('/')
+            setLoggedIn(false)
+            setCurrentUser(null)
             Swal.fire({
               position: "top-end",
               icon: "success",
