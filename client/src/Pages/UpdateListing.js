@@ -65,7 +65,7 @@ export default function UpdateListing(props) {
       })
       .catch((error) => console.log(error));
     }else{
-      // navigate('/');
+      navigate('/');
     }
   }, [props.API_URL, props.isLoggedIn, params.id,navigate]);
   //function to handle change event

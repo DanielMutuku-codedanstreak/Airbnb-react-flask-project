@@ -130,8 +130,8 @@ export default function UserProvider({children}) {
             Swal.fire({
                position: "top",
                icon: "error",
-               title: response.error,
-               text: "Something went wrong!",
+               title: "failed",
+               text: response.error,
             });
             
          });
