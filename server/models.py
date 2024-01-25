@@ -65,12 +65,12 @@ class Reservation(db.Model, SerializerMixin):
     property = db.relationship('Property', backref='reservations', lazy=True)
 
 
-    class TokenBlocklist(db.Model,SerializerMixin):
-        __tablename__='token_blocklist'
+class TokenBlocklist(db.Model,SerializerMixin):
+    __tablename__='token_blocklist'
 
-        id = db.Column(db.Integer, primary_key=True)
-        jti =  db.Column(db.String(100),nullable=True)
-        created_at = db.Column(db.DateTime(), default=datetime.utcnow)
+    id = db.Column(db.Integer, primary_key=True)
+    jti =  db.Column(db.String(100),nullable=True)
+    created_at = db.Column(db.DateTime(), default=datetime.utcnow)
 
     # def is_checkout_valid(self, check_out_date):
     #     return (
