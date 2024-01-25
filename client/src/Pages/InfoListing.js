@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReservationContext } from '../context/ReservationContext';
 import { UserContext } from '../context/UserContext';
+import Swal from 'sweetalert2';
 
 export default function InfoListing() {
   const params = useParams();
