@@ -15,6 +15,7 @@ export default function UserProvider({children}) {
    const [loggedIn, setLoggedIn] = useState(false)
    const [userType, setUserType] = useState()
    
+   
    //Registration
 
    function registerUser(name, email, phone, password, userType) {
@@ -190,6 +191,8 @@ export default function UserProvider({children}) {
                 if(response.email || response.username){
                     setCurrentUser(response)
                     setUserType(response.user_type)
+                    setCurrentUser(response)
+                    // console.log(response)
 
                     setLoggedIn(true)
                 }
@@ -203,15 +206,61 @@ export default function UserProvider({children}) {
     
 
     }, [authToken, onchange])
-    // alert(userType)
+    // console.log(currentUser)
+    
+   // update current user details
+   function updateCurrentuserDetails(name,email,phone){
+    fetch('/user',{
+        method :'PATCH',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`
+        },
+        body:JSON.stringify({
+            name:name,
+            email:email,
+            phone:phone
+        })
+
+    })
+    .then( res => res.json())
+    .then((response) => {
+        if(response.error){
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: response.error,
+                showConfirmButton: false,
+                timer: 1500
+              });
+           
+          }else{
+            
+            setOnchange(!onchange)
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: response.success,
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+
+    })
+   }
+    
+
+
 
     const contextData = {
+        currentUser,
    registerUser,
    login,
    resetPassword,
    loggedIn,setLoggedIn,
    logout,
-   userType
+   userType,
+   updateCurrentuserDetails,
 
    }
   return (
