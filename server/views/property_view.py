@@ -233,7 +233,7 @@ def delete_property(property_id):
         return jsonify({"error": "Property not found"}), 404
 
 #get all property by user_id(host)
-@prop_bp.route('/get_all_properties by user_id')  
+@prop_bp.route('/get_all_properties_by_user_id')  
 @jwt_required()
 def get_all_properties_by_user_id():
    user_id = get_jwt_identity() #current user id

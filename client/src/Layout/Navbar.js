@@ -27,6 +27,7 @@ export default function Navbar() {
                     <>
                       <NavLink className="nav-link active" to="/">Home</NavLink>
                       <NavLink className="nav-link active" aria-current="page" to="/add_property">Add Property</NavLink>
+                      <NavLink className="nav-link active" aria-current="page" to="/my_property">My Property</NavLink>
                       <NavLink className="nav-link active" to="/profile">Profile</NavLink>
                       <Link>
                         <button className='btn btn-primary' onClick={logout}>Logout</button>
