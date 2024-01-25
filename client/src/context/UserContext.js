@@ -47,14 +47,7 @@ export default function UserProvider({children}) {
              navigate('/login')
             
          })
-         .catch(error => {
-            Swal.fire({
-               icon: "error",
-               title: response.error,
-               text: "Something went wrong!",
-            });
-            
-         });
+         
      }
    }
    
