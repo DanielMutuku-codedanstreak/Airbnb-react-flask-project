@@ -20,6 +20,8 @@ import ResetPassword from './Pages/ResetPassword';
 
 import UserProvider from './context/UserContext';
 import AddListing from './Components/AddListing';
+import MyPropertyList from './Pages/MyPropertyList';
+import MyClients from './Pages/MyClients';
 
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
             <Route path='editproperty/:id' element={<UpdateListing />} />
             <Route path='/reset_password' element={<ResetPassword />} />
             <Route path='/add_property' element={<AddListing/>} />
+            <Route path='/my_property' element={<MyPropertyList/>} />
+            <Route path='/my_clients/:id' element={<MyClients/>} />
           </Route>
         </Routes>
       </PropertyProvider>

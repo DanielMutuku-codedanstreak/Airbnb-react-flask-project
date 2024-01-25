@@ -71,6 +71,7 @@ export default function AddListing() {
         })
             .then((res) => res.json())
             .then((data) => {
+                setAdded(!added)
                 setSubmittedListings(data);
                 navigate('/');
                 setFormData({
@@ -93,7 +94,7 @@ export default function AddListing() {
                 });
 
                 Swal.fire({
-                    title: 'Good job!',
+                    title: 'success',
                     text: 'Property added successfully',
                     icon: 'success',
                 });
@@ -132,9 +133,16 @@ export default function AddListing() {
                                         value={formData.category}
                                     >
                                         <option >Select Category</option>
-                                        <option value="One-bedroom">One-bedroom</option>
-                                        <option value="Two-bedroom">Two-bedroom</option>
-                                        <option value="Three-bedroom">Three-bedroom</option>
+                                        <option value="entire-home">Entire Home/Apartment</option>
+                                        <option value="private-room">Private Room</option>
+                                        <option value="shared-room">Shared Room</option>
+                                        <option value="hotel">Hotel</option>
+                                        <option value="unique-stays">Unique Stays</option>
+                                        <option value="boutique">Boutique</option>
+                                        <option value="entire-floor-suite">Entire Floor or Guest Suite</option>
+                                        <option value="hostel">Hostel</option>
+                                        <option value="cabin">Cabin</option>
+                                        <option value="farm-stay">Farm Stay</option>
                                     </select>
                             </div>
 

@@ -1,6 +1,6 @@
 from models import db,User
 from flask import request,jsonify ,Blueprint
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash,check_password_hash
 from flask_jwt_extended import  jwt_required, get_jwt_identity
 
 
@@ -84,7 +84,7 @@ def delete_user():
 
 
 #update user details
-@user_bp.route('/users/<int:user_id>', methods=['PUT'])
+@user_bp.route('/user', methods=['PATCH'])
 @jwt_required()
 def update_user_details():
     user_id = get_jwt_identity() #current user id
@@ -97,18 +97,24 @@ def update_user_details():
         email = data['email']
         phone = data['phone']
 
-        check_email = User.query.filter_by(email=email).first()
-        if check_email and (check_email != user.email):
-            return jsonify({"error": f"The email: {email} already exists"}), 404  
+        if name:
+            user.name = name.title()
 
-        check_phone = User.query.filter_by(phone=phone).first()
-        if check_email and (check_email != user.phone):
-            return jsonify({"error": f"The phone: {phone} already exists"}), 404   
+        if email:
+            check_email = User.query.filter_by(email=email).first()
+            if check_email and (check_email != user.email):
+                return jsonify({"error": f"The email: {email} already exists"}), 404 
 
+            user.email = email 
+
+        if phone:
+            check_phone = User.query.filter_by(phone=phone).first()
+            if check_email and (check_email != user.phone):
+                return jsonify({"error": f"The phone: {phone} already exists"}), 404   
+            user.phone = phone
         # update the user
-        user.name = name.title()
-        user.email = email
-        user.phone = phone
+        
+        
         
         db.session.commit()
         return jsonify({"success": "User updated successfully"}), 200
@@ -138,3 +144,32 @@ def reset_password():
     db.session.commit()
 
     return jsonify({"success": "Password changed successfully"}), 200
+
+
+#change password
+@user_bp.route('/change_password', methods=['POST'])
+@jwt_required()
+def change_password():
+    user_id = get_jwt_identity()  # current user id
+
+    data = request.get_json()
+
+    current_password = data['current_password']
+    new_password = data['new_password']
+
+    if not current_password or not new_password:
+        return jsonify({"error": "Both current password and new password are required"}), 400
+
+    user = User.query.filter_by(id=user_id).first()
+
+   
+    
+    if user:
+        if check_password_hash(user.password, current_password):
+            user.password = generate_password_hash(new_password)
+            db.session.commit()
+            return jsonify({"success":"password changed"}),201
+
+        return jsonify({"error":"Wrong current password!"}),404
+        
+

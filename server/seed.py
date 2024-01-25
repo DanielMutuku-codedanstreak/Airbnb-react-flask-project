@@ -32,7 +32,18 @@ with app.app_context():
 
    properties=[]
    amenities = ["Wi-Fi", "Television",  "Air conditioning"]
-   categories = ["Two-bedroom","One-bedroom","Three-bedroom"]
+   categories = [
+    "Entire Home/Apartment",
+    "Private Room",
+    "Shared Room",
+    "Hotel",
+    "Unique Stays",
+    "Boutique",
+    "Entire Floor or Guest Suite",
+    "Hostel",
+    "Cabin",
+    "Farm Stay"
+]
    inclusives=["Meal Plan : Bed And BreakFast", "Pick up and Return Transfer"]
    locations = [
     "Nairobi",

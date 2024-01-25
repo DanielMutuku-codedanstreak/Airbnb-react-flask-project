@@ -22,7 +22,7 @@ def login():
    if user:
       if check_password_hash(user.password, password):
          access_token = create_access_token(identity = user.id)
-         return jsonify(access_token = access_token),200
+         return jsonify(access_token = access_token),201
 
       return jsonify({"error":"Wrong password!"}),404
    
@@ -59,4 +59,4 @@ def logout():
     db.session.add(token_b)
     db.session.commit()
 
-    return jsonify({"success": "Logged out successfully!"}), 200
+    return jsonify({"success": "Logged out successfully!"}), 201
