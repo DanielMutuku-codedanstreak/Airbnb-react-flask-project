@@ -114,44 +114,49 @@ export default function UserProvider({children}) {
 
 
     //Reset password
-    function resetPassword(name, email,  password) {
-      {
-         fetch("/reset_password",{
-             method: "POST",
-             headers: {
-                 "Content-Type": "application/json"
-             },
-             body: JSON.stringify({
-                  name:name,
-                  email:email,
-                  password:password })
- 
-         }
-         )
-         .then(res => res.json())
-         .then(response => {
-             
-             Swal.fire({
-             position: "top-end",
-             icon: "success",
-             title: response.success,
-             showConfirmButton: false,
-             timer: 1500
-             });
-             navigate('/login')
-            
-         })
-        //  .catch(error => {
-        //     Swal.fire({
-        //        position: "top",
-        //        icon: "error",
-        //        title: "failed",
-        //        text: response.error,
-        //     });
-            
-        //  });
-     }
-   }
+    function resetPassword(name, email, password) {
+        fetch("/reset_password", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password
+            })
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: response.success,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                navigate('/login');
+            } else {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Failed",
+                    text: response.error || "Unknown error",
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error occurred:", error);
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Failed",
+                text: "An unexpected error occurred.",
+            });
+        });
+    }
+    
 
 
 
@@ -313,7 +318,7 @@ export default function UserProvider({children}) {
         console.log(response)
         if(response.error){
             Swal.fire({
-                position: "top-end",
+                position: "top",
                 icon: "error",
                 title: response.error,
                 showConfirmButton: false,
@@ -326,7 +331,7 @@ export default function UserProvider({children}) {
             setLoggedIn(false)
             setCurrentUser(null)
             Swal.fire({
-              position: "top-end",
+              position: "top",
               icon: "success",
               title: response.success,
               showConfirmButton: false,

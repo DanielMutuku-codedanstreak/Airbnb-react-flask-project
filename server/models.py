@@ -15,7 +15,7 @@ class User(db.Model, SerializerMixin):
     user_type = db.Column(db.String(50), nullable=False)
 
     # One-to-Many relationship: a user can make many reservations
-    # reservations = db.relationship('Reservation', backref='user', lazy=True, cascade='all, delete-orphan')
+    reservations = db.relationship('Reservation', backref='user', lazy=True, cascade='all, delete-orphan')
 
     # One-to-Many relationship: a user can have many properties
     properties = db.relationship('Property', backref='user', lazy=True)
@@ -45,7 +45,7 @@ class Property(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=False)
 
     # One-to-Many relationship: a property can have many reservations
-    # reservations = db.relationship('Reservation', backref='property', lazy=True, cascade='all, delete-orphan')
+    reservations = db.relationship('Reservation', backref='property', lazy=True, cascade='all, delete-orphan')
 
 class Reservation(db.Model, SerializerMixin):
     __tablename__ = 'reservations'
@@ -62,8 +62,8 @@ class Reservation(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id'), nullable=True)
     property_id = db.Column(db.Integer(), db.ForeignKey('properties.id'), nullable=True)
 
-    user = db.relationship('User', backref='reservations', lazy=True, cascade='all, delete')
-    property = db.relationship('Property', backref='reservations', lazy=True, cascade='all, delete')
+    # user = db.relationship('User', backref='reservations', lazy=True, cascade='all, delete')
+    # property = db.relationship('Property', backref='reservations', lazy=True)
 
 class TokenBlocklist(db.Model, SerializerMixin):
     __tablename__='token_blocklist'
