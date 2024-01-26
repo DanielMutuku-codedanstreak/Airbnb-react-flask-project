@@ -1,19 +1,7 @@
-import React, { useEffect } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
-import AddListing from '../Components/AddListing'
-import AdminHeader from '../Components/AdminHeader'
+import React from 'react'
 
-export default function Admin(props) {
-    const navigate = useNavigate()
-    useEffect(() => {
-        if (!props.isLoggedIn) {
-            navigate('/');
-        }
-    }, [props.isLoggedIn, navigate])
-
+export default function Admin() {
   return (
-    <div>
-       
-    </div>
+    <div>Admin</div>
   )
 }

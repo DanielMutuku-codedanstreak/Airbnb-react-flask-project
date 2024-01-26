@@ -2,15 +2,15 @@ import React from 'react'
 import SortBar from './SortBar'
 import SearchBar from './SearchBar'
 
-export default function UtilityBar(props) {
+export default function UtilityBar() {
   return (
     <div className='container mb-2'>
         <div className='row'>
             <div className='col-md-6'>
-                <SearchBar listings={props.listings} onSearch={props.handleSearch}></SearchBar>
+                <SearchBar />
             </div>
             <div className='col-md-6'>
-                <SortBar listings={props.listings} setListings={props.setListings}></SortBar>
+                <SortBar />
             </div>
         </div>
     </div>

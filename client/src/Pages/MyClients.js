@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const MyClients = () => {
   const [clients, setClients] = useState([]);
@@ -20,9 +20,7 @@ const MyClients = () => {
         setClients(response);
         console.log(response);
       });
-  }, []);
-
-  console.log(clients);
+  }, [authToken, id]);
 
   return (
     <div className='container'>

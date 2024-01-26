@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 export default function InfoListing() {
   const params = useParams();
   const navigate = useNavigate();
-  const { reservations, addReservation, deleteReservation } = useContext(ReservationContext);
+  const { addReservation } = useContext(ReservationContext);
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
   const [listing, setListing] = useState(null);
@@ -114,12 +114,6 @@ export default function InfoListing() {
       console.error('Error adding reservation:', error);
       // Handle error, show an error message to the user
     }
-  };
-
-  // Handle reservation deletion
-  const handleDeleteReservation = (reservationId) => {
-    // Call the deleteReservation function from the context
-    deleteReservation(reservationId);
   };
 
   return (

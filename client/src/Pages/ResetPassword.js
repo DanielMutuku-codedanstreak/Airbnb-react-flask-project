@@ -38,7 +38,7 @@ const ResetPassword = () => {
         <div className='col-md-6'>
           <form className='bg-secondary bg-opacity-25 p-4' style={{ borderRadius: '10px' }} onSubmit={handleSubmit}>
             <div>
-              <h2 className='text-center'>Register</h2>
+              <h2 className='text-center'>Reset Password</h2>
             </div>
             <div className="mb-3">
               <label htmlFor="fullname" className="form-label">Full name</label>
@@ -50,7 +50,7 @@ const ResetPassword = () => {
             </div>
            
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
+              <label htmlFor="password" className="form-label">New Password</label>
               <input required type="password" className="form-control" onChange={(e)=> setPassword(e.target.value)} value={password} />
             </div>
             <div className="mb-3">
