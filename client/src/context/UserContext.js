@@ -18,7 +18,7 @@ export default function UserProvider({children}) {
    
    //Registration
    function registerUser(name, email, phone, password, userType) {
-    fetch("/register", {
+    fetch("https://airbnb-react-flask-app.onrender.com/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -68,7 +68,7 @@ export default function UserProvider({children}) {
    // Login
    function login(email, password)
     {
-        fetch("/login",{
+        fetch("https://airbnb-react-flask-app.onrender.com/login",{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -115,7 +115,7 @@ export default function UserProvider({children}) {
 
     //Reset password
     function resetPassword(name, email, password) {
-        fetch("/reset_password", {
+        fetch("https://airbnb-react-flask-app.onrender.com/reset_password", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -162,7 +162,7 @@ export default function UserProvider({children}) {
 
    //logout
    function logout(){
-      fetch('/logout',{
+      fetch('https://airbnb-react-flask-app.onrender.com/logout',{
          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -191,7 +191,7 @@ export default function UserProvider({children}) {
     useEffect(()=>{
         if(authToken)
         {
-            fetch("/authenticated_user",{
+            fetch("https://airbnb-react-flask-app.onrender.com/authenticated_user",{
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -222,7 +222,7 @@ export default function UserProvider({children}) {
     
    // update current user details
    function updateCurrentuserDetails(updatedName, updatedEmail, updatedPhone){
-    fetch('/user',{
+    fetch('https://airbnb-react-flask-app.onrender.com/user',{
         method :'PATCH',
         headers: {
             "Content-Type": "application/json",
@@ -264,7 +264,7 @@ export default function UserProvider({children}) {
    //change password
 
    function changePassword( newPassword,currentPassword ){
-    fetch('/change_password',{
+    fetch('https://airbnb-react-flask-app.onrender.com/change_password',{
         method :'POST',
         headers: {
             "Content-Type": "application/json",
@@ -305,7 +305,7 @@ export default function UserProvider({children}) {
 
    // delete account
    function deleteAccount(){
-    fetch('/user',{
+    fetch('https://airbnb-react-flask-app.onrender.com/user',{
         method :'DELETE',
         headers: {
             "Content-Type": "application/json",

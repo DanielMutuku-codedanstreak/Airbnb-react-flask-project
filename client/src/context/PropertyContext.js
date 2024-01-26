@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 export const PropertyContext = createContext();
 
 export default function PropertyProvider({ children }) {
-  const PROPERTY_API_URL = '/properties';
+  const PROPERTY_API_URL = 'https://airbnb-react-flask-app.onrender.com/properties';
   const authToken = sessionStorage.getItem('authToken');
   const [allListings, setAllListings] = useState([]);
   const [hostListings, setHostListings] = useState([]);
@@ -66,7 +66,7 @@ export default function PropertyProvider({ children }) {
   const fetchHostListings = () => {
     setLoading(true);
 
-    fetch('/get_all_properties_by_user_id', {
+    fetch('https://airbnb-react-flask-app.onrender.com/get_all_properties_by_user_id', {
       headers: {
         Authorization: `Bearer ${authToken && authToken}`,
       },
@@ -112,7 +112,7 @@ export default function PropertyProvider({ children }) {
   const deleteProperty = async (id) => {
     try {
       const authToken = sessionStorage.getItem('authToken');
-      const response = await fetch(`/properties/${id}`, {
+      const response = await fetch(`https://airbnb-react-flask-app.onrender.com/properties/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

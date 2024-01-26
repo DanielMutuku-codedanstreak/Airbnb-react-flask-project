@@ -17,7 +17,7 @@ export default function InfoListing() {
 
   // Function to fetch data of one listing
   useEffect(() => {
-    fetch(`/properties/${params.id}`)
+    fetch(`https://airbnb-react-flask-app.onrender.com/properties/${params.id}`)
       .then((res) => res.json())
       .then((data) => setListing(data))
       .catch((error) => console.log(error));
