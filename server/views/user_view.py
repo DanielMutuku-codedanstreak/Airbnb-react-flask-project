@@ -93,9 +93,9 @@ def update_user_details():
     if user:
         data = request.get_json()
 
-        name = data.get('name', user.name)  # Use existing name if not provided
-        email = data.get('email', user.email)  # Use existing email if not provided
-        phone = data.get('phone', user.phone)  # Use existing phone if not provided
+        name = data.get('name', user.name)  
+        email = data.get('email', user.email)  
+        phone = data.get('phone', user.phone)  
 
         user.name = name.title()
 
