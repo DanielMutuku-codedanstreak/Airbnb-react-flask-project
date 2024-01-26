@@ -61,7 +61,7 @@ search functionality and booking system.
 ## live server
 - to access the frontend here is the link: 
 
-- to access the backend here is the link: https://airbnb-react-flask-app.onrender.com/
+- to access the backend here is the link: https://airbnb-react-flask-app.onrender.com
 
 ## Known Bugs
 - The application works perfectly well, no bugs.
