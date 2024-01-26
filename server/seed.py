@@ -21,7 +21,7 @@ with app.app_context():
          name = fake.name(),
          email = fake.email(),
          phone = fake.phone_number(),
-         password = fake.password(special_chars=True,digits= True, upper_case=True, lower_case=True),
+         password = fake.word(),
          user_type = rc(user_types)
       )
       db.session.add(user)
@@ -62,9 +62,9 @@ with app.app_context():
     "Kericho",
     "Garissa",
 ]
-   for _ in range (20):
+   for _ in range (100):
       property =Property(
-         title = fake.word(),
+         title = fake.sentence(),
         description = fake.sentence(),
         category = rc(categories),
         image = 'https://a0.muscache.com/im/pictures/c3281f7a-ca80-4ff7-a3a8-131469e42c16.jpg?im_w=720',
@@ -91,7 +91,7 @@ with app.app_context():
 
    reservations =[]
    for property in properties:
-    for _ in range(fake.random_int(min=1, max=4)):
+    for _ in range(fake.random_int(min=1, max=5)):
         start_date = fake.date_between(start_date="today", end_date="+1y")
         
         # Generate a random duration for the reservation (between 1 and 14 days)
