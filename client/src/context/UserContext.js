@@ -202,7 +202,7 @@ export default function UserProvider({children}) {
     // console.log(currentUser)
     
    // update current user details
-   function updateCurrentuserDetails(name,email,phone){
+   function updateCurrentuserDetails(updatedName, updatedEmail, updatedPhone){
     fetch('/user',{
         method :'PATCH',
         headers: {
@@ -210,9 +210,9 @@ export default function UserProvider({children}) {
             Authorization: `Bearer ${authToken}`
         },
         body:JSON.stringify({
-            name:name,
-            email:email,
-            phone:phone
+            name:updatedName,
+            email:updatedEmail,
+            phone:updatedPhone
         })
 
     })
