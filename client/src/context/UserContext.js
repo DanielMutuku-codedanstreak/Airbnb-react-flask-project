@@ -17,39 +17,53 @@ export default function UserProvider({children}) {
    
    
    //Registration
-
    function registerUser(name, email, phone, password, userType) {
-      {
-         fetch("/register",{
-             method: "POST",
-             headers: {
-                 "Content-Type": "application/json"
-             },
-             body: JSON.stringify({
-                  name:name,
-                  email:email,
-                  phone:phone,
-                  password:password,
-                  user_type:userType })
- 
-         }
-         )
-         .then(res => res.json())
-         .then(response => {
-             
-             Swal.fire({
-             position: "top-end",
-             icon: "success",
-             title: response.success,
-             showConfirmButton: false,
-             timer: 1500
-             });
-             navigate('/login')
+    fetch("/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            phone: phone,
+            password: password,
+            user_type: userType
+        })
+    })
+    .then(res => res.json())
+    .then(response => {
+        if (response.success) {
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: response.success,
+                showConfirmButton: false,
+                timer: 1500
+            });
             
-         })
-         
-     }
-   }
+            navigate('/login');
+        } else {
+            // Handle registration failure
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: `Registration failed! ${response.error} !`,
+                showConfirmButton: true
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Error during registration:", error);
+        
+        Swal.fire({
+            position: "top",
+            icon: "error",
+            title: "An error occurred during registration",
+            showConfirmButton: true
+        });
+    });
+}
    
    // Login
    function login(email, password)
