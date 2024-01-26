@@ -1,38 +1,12 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { ReservationContext } from '../context/ReservationContext';
 
 const MyBookings = () => {
-  const { bookings, setBookings, deleteReservation } = useContext(ReservationContext);
+  const { bookings, deleteReservation } = useContext(ReservationContext);
 
   const handleDelete = (reservationId) => {
     deleteReservation(reservationId);
-    // Swal.fire({
-    //   title: 'Are you sure?',
-    //   text: 'This action cannot be undone!',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#3085d6',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Yes, cancel it!',
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     fetch(`/reservations/${reservationId}`, {
-    //       method: 'DELETE',
-    //     })
-    //       .then((response) => response.json())
-    //       .then((data) => {
-    //         console.log('Response from server:', data);
-    //         setBookings((prevBookings) => prevBookings.filter((booking) => booking.id !== reservationId));
-    //       })
-    //       .catch((error) => {
-    //         console.error('Error deleting booking:', error);
-    //       });
-
-    //     Swal.fire('Cancelled!', 'Your reservation has been cancelled.', 'success');
-    //   }
-    // });
   };
 
   return (
