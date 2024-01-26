@@ -13,7 +13,7 @@ from datetime import timedelta
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://airbnb_database_snlc_user:UvZReTdssWGOVzLeNpcQaeTbkbQgwx3c@dpg-cmpce62cn0vc73cn9090-a.oregon-postgres.render.com/airbnb_database_snlc'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.sqlite'#postgresql://airbnb_database_snlc_user:UvZReTdssWGOVzLeNpcQaeTbkbQgwx3c@dpg-cmpce62cn0vc73cn9090-a.oregon-postgres.render.com/airbnb_database_snlc'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 migrate = Migrate(app, db)
