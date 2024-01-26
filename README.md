@@ -17,6 +17,8 @@ search functionality and booking system.
 
 - run pipenv shell command on the terminal to activate a virtual environment.
 
+- first run flask db upgrade in the virtual environment head to apply all migrations
+
 - run python3 seed.py on the terminal to seed data into the Database.
 
 - run python3 app.py on the terminal and your server will be running.
