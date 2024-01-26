@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c766ae8effa7e92ef0bf4fbcde09585bd4e40596b8425c3ae383d3dd7432cbae"
+            "sha256": "cd3c634276a0dacfb2e853dc08cf1d75b6e8c06c59f105eb67f4945850b8380c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -53,6 +53,7 @@
                 "sha256:79cbe3be786789efa05b8c75d7e0ec4efa6ecb786b8fe90eae49c2f8f9cbe31a"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.8'",
             "version": "==22.5.1"
         },
         "flask": {
@@ -61,7 +62,16 @@
                 "sha256:ca631a507f6dfe6c278ae20112cea3ff54ff2216390bf8880f6b035a5354af13"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.8'",
             "version": "==3.0.1"
+        },
+        "flask-cors": {
+            "hashes": [
+                "sha256:bc3492bfd6368d27cfe79c7821df5a8a319e1a6d5eab277a3794be19bdc51783",
+                "sha256:f268522fcb2f73e2ecdde1ef45e2fd5c71cc48fe03cffb4b441c6d1b40684eb0"
+            ],
+            "index": "pypi",
+            "version": "==4.0.0"
         },
         "flask-jwt-extended": {
             "hashes": [
@@ -69,6 +79,7 @@
                 "sha256:9215d05a9413d3855764bcd67035e75819d23af2fafb6b55197eb5a3313fdfb2"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.7' and python_version < '4'",
             "version": "==4.6.0"
         },
         "flask-migrate": {
@@ -77,6 +88,7 @@
                 "sha256:d3f437a8b5f3849d1bb1b60e1b818efc564c66e3fefe90b62e5db08db295e1b1"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.6'",
             "version": "==4.0.5"
         },
         "flask-restful": {
@@ -93,6 +105,7 @@
                 "sha256:e4b68bb881802dda1a7d878b2fc84c06d1ee57fb40b874d3dc97dabfa36b8312"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.8'",
             "version": "==3.1.1"
         },
         "greenlet": {
@@ -165,6 +178,7 @@
                 "sha256:88ec8bff1d634f98e61b9f65bc4bf3cd918a90806c6f5c48bc5603849ec81033"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.5'",
             "version": "==21.2.0"
         },
         "itsdangerous": {
@@ -341,6 +355,7 @@
                 "sha256:f9b5571d33660d5009a8b3c25dc1db560206e2d2f89d3df1cb32d72c0d117d52"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.7'",
             "version": "==2.9.9"
         },
         "pyjwt": {
@@ -427,6 +442,7 @@
                 "sha256:f5693145220517b5f42393e07a6898acdfe820e136c98663b971906120549da5"
             ],
             "index": "pypi",
+            "markers": "python_version >= '3.7'",
             "version": "==2.0.25"
         },
         "sqlalchemy-serializer": {
