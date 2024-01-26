@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 export const ReservationContext = createContext();
 
 export default function ReservationProvider({ children }) {
-  const RESERVATION_API_URL = '/reservations';
+  const RESERVATION_API_URL = 'https://airbnb-react-flask-app.onrender.com/reservations';
   const [reservations, setReservations] = useState([]);
   const  navigate = useNavigate();
   const authToken = sessionStorage.getItem('authToken');

@@ -1,0 +1,4 @@
+# _redirects
+
+#/api/*  https://airbnb-react-flask-app.onrender.com/:splat  200
+#/*      /index.html  200

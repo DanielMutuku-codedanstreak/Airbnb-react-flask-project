@@ -8,7 +8,7 @@ const MyClients = () => {
 
   // Fetch my clients
   useEffect(() => {
-    fetch(`/clients/${id}`, {
+    fetch(`https://airbnb-react-flask-app.onrender.com/clients/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
