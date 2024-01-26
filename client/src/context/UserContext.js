@@ -47,14 +47,7 @@ export default function UserProvider({children}) {
              navigate('/login')
             
          })
-         .catch(error => {
-            Swal.fire({
-               icon: "error",
-               title: response.error,
-               text: "Something went wrong!",
-            });
-            
-         });
+         
      }
    }
    
@@ -134,15 +127,15 @@ export default function UserProvider({children}) {
              navigate('/login')
             
          })
-         .catch(error => {
-            Swal.fire({
-               position: "top",
-               icon: "error",
-               title: "failed",
-               text: response.error,
-            });
+        //  .catch(error => {
+        //     Swal.fire({
+        //        position: "top",
+        //        icon: "error",
+        //        title: "failed",
+        //        text: response.error,
+        //     });
             
-         });
+        //  });
      }
    }
 
@@ -290,6 +283,46 @@ export default function UserProvider({children}) {
     })
    }
 
+
+   // delete account
+   function deleteAccount(){
+    fetch('/user',{
+        method :'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`
+        },
+        
+    })
+    .then(res => res.json())
+    .then((response) => {
+        console.log(response)
+        if(response.error){
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: response.error,
+                showConfirmButton: false,
+                timer: 1500
+              });
+           
+          }else{
+            
+            navigate('/')
+            setLoggedIn(false)
+            setCurrentUser(null)
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: response.success,
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+
+    })
+   }
+
    
 
 
@@ -304,6 +337,7 @@ export default function UserProvider({children}) {
    userType,
    updateCurrentuserDetails,
    changePassword,
+   deleteAccount,
 
    }
   return (

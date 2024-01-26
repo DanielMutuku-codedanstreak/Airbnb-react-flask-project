@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/UserContext';
+import Swal from 'sweetalert2';
 
 const ChangePassword = () => {
 

@@ -2,8 +2,13 @@ import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 
 const ViewProfile = () => {
-  const {currentUser} = useContext(UserContext)
+  const {currentUser, deleteAccount} = useContext(UserContext)
  const[loading, setloading] = useState(false)
+
+ function handleDelete(){
+  deleteAccount()
+ 
+ }
 
   return (
     <div className="d-flex justify-content-center mt-5" style={{ minHeight: '65vh' }}>
@@ -51,7 +56,7 @@ const ViewProfile = () => {
                 CAUTION deleting the account is irreversible !
                </div>
               </label>
-              <input type="text" className="form-control bg-danger text-center text-bark fs-6 fw-semibold" id="phone" value="Delete Account" disabled />
+              <input type="submit" onClick={() => handleDelete()} className="form-control bg-danger text-center text-bark fs-6 fw-semibold" id="phone" value="Delete Account"  />
             </div>
           </>
         ) : (
