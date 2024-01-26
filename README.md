@@ -57,9 +57,9 @@ search functionality and booking system.
 - An authenticated host can view guests who have booked their BnB properties
 
 ## live server
--
+- 
 
--
+- to access the backend here is the link: https://65b2f12d6283c34cb8428d0e--unrivaled-brigadeiros-679b0c.netlify.app/
 
 ## Known Bugs
 - The application works perfectly well, no bugs.
