@@ -29,31 +29,31 @@ export default function AddListing() {
     // Function to handle change event
     const handleChange = (e) => {
         const { name, value } = e.target;
-
+    
         if (name === 'other_images' || name === 'inclusives' || name === 'amenities') {
-        // Split the input values based on newline
-        const arrayValues = value.split('\n');
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: arrayValues,
-        }));
+            // Split the input values based on newline
+            const arrayValues = value.split('\n');
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: arrayValues,
+            }));
         } else if (name.startsWith('rules')) {
-        // Handle nested rules object
-        const [ruleKey, ruleProperty] = name.split('.');
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            rules: {
-            ...prevFormData.rules,
-            [ruleProperty]: value,
-            },
-        }));
+            // Handle nested rules object
+            const [ruleKey, ruleProperty] = name.split('.');
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                rules: {
+                    ...prevFormData.rules,
+                    [ruleProperty]: value,
+                },
+            }));
         } else {
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value,
-        }));
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value,
+            }));
         }
-    };
+    };    
 
     // Function to handle form submission
     const handleSubmit = async (e) => {
@@ -128,7 +128,7 @@ export default function AddListing() {
                                 name="other_images"
                                 className="form-control"
                                 placeholder="Enter other image URLs separated by a newline"
-                                rows="4"
+                                rows="10"
                                 onChange={handleChange}
                                 value={formData.other_images.join('\n')}
                             ></textarea>

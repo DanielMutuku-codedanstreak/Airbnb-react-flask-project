@@ -13,7 +13,7 @@ export default function UpdateListing(props) {
         description: '',
         category: '',
         image: '',
-        other_Images: [],
+        other_images: [],
         price: '',
         inclusives: [],
         amenities: [],
@@ -34,52 +34,58 @@ export default function UpdateListing(props) {
       
     // Function to handle nested properties and handle undefined values
     const getPropertyValue = (obj, path, defaultValue = '') => {
-        try {
-          return path.split('.').reduce((acc, key) => acc[key], obj) || defaultValue;
-        } catch (error) {
+      try {
+          const value = path.split('.').reduce((acc, key) => acc[key], obj);
+          
+          if (Array.isArray(value)) {
+              return value;
+          } else {
+              return value || defaultValue;
+          }
+      } catch (error) {
           console.error('Error getting property value:', error);
           return defaultValue;
-        }
+      }
     };
       
     // Function to handle change event
     const handleChange = (e) => {
-        const { name, value } = e.target;
-      
-        if (name === 'other_Images' || name === 'inclusives' || name === 'amenities') {
+      const { name, value } = e.target;
+  
+      if (name === 'other_images' || name === 'inclusives' || name === 'amenities') {
           // Split the input values based on newline
           const arrayValues = value.split('\n');
           setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: arrayValues,
+              ...prevFormData,
+              [name]: arrayValues,
           }));
-        } else if (name.startsWith('rules')) {
+      } else if (name.startsWith('rules')) {
           // Handle nested rules object
           const [ruleKey, ruleProperty] = name.split('.');
           setFormData((prevFormData) => ({
-            ...prevFormData,
-            rules: {
-              ...prevFormData.rules,
-              [ruleProperty]: value,
-            },
+              ...prevFormData,
+              rules: {
+                  ...prevFormData.rules,
+                  [ruleProperty]: value,
+              },
           }));
-        } else if (name.startsWith('host')) {
+      } else if (name.startsWith('host')) {
           // Handle nested host object
           const hostProperty = name.split('.')[1];
           setFormData((prevFormData) => ({
-            ...prevFormData,
-            host: {
-              ...prevFormData.host,
-              [hostProperty]: value,
-            },
+              ...prevFormData,
+              host: {
+                  ...prevFormData.host,
+                  [hostProperty]: value,
+              },
           }));
-        } else {
+      } else {
           setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value,
+              ...prevFormData,
+              [name]: value,
           }));
-        }
-    };
+      }
+    };  
 
     // Function to handle form submission
     const handleSubmit = async (e) => {
@@ -114,7 +120,7 @@ export default function UpdateListing(props) {
                     description: updatedData.description || '',
                     category: updatedData.category || '',
                     image: updatedData.image || '',
-                    other_Images: updatedData.other_images || [],
+                    other_images: updatedData.other_images || [],
                     price: updatedData.price || '',
                     inclusives: updatedData.inclusives || [],
                     amenities: updatedData.amenities || [],
@@ -146,42 +152,41 @@ export default function UpdateListing(props) {
     
     // Use the getPropertyValue function to handle undefined values when populating the form
     useEffect(() => {
-        const fetchProperty = async () => {
+      const fetchProperty = async () => {
           try {
-            const data = await getPropertyById(params.id);
-            setFormData((prevFormData) => ({
-              ...prevFormData,
-              title: getPropertyValue(data, 'title'),
-              description: getPropertyValue(data, 'description'),
-              category: getPropertyValue(data, 'category'),
-              image: getPropertyValue(data, 'image'),
-              other_Images: getPropertyValue(data, 'other_images', []),
-              price: getPropertyValue(data, 'price'),
-              inclusives: getPropertyValue(data, 'inclusives', []),
-              amenities: getPropertyValue(data, 'amenities', []),
-              rules: {
-                checkin: getPropertyValue(data, 'rules.checkin'),
-                checkout: getPropertyValue(data, 'rules.checkout'),
-              },
-              capacity: getPropertyValue(data, 'capacity'),
-              bathrooms: getPropertyValue(data, 'bathrooms'),
-              beds: getPropertyValue(data, 'beds'),
-              location: getPropertyValue(data, 'location'),
-              host: {
-                name: getPropertyValue(data, 'host.name'),
-                email: getPropertyValue(data, 'host.email'),
-                phone: getPropertyValue(data, 'host.phone'),
-              },
-            }));
+              const data = await getPropertyById(params.id);
+              setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  title: getPropertyValue(data, 'title'),
+                  description: getPropertyValue(data, 'description'),
+                  category: getPropertyValue(data, 'category'),
+                  image: getPropertyValue(data, 'image'),
+                  other_images: getPropertyValue(data, 'other_images', []).map(String), // Convert to array of strings
+                  price: getPropertyValue(data, 'price'),
+                  inclusives: getPropertyValue(data, 'inclusives', []).map(String), // Convert to array of strings
+                  amenities: getPropertyValue(data, 'amenities', []).map(String), // Convert to array of strings
+                  rules: {
+                      checkin: getPropertyValue(data, 'rules.checkin'),
+                      checkout: getPropertyValue(data, 'rules.checkout'),
+                  },
+                  capacity: getPropertyValue(data, 'capacity'),
+                  bathrooms: getPropertyValue(data, 'bathrooms'),
+                  beds: getPropertyValue(data, 'beds'),
+                  location: getPropertyValue(data, 'location'),
+                  host: {
+                      name: getPropertyValue(data, 'host.name'),
+                      email: getPropertyValue(data, 'host.email'),
+                      phone: getPropertyValue(data, 'host.phone'),
+                  },
+              }));
           } catch (error) {
-            console.log(error);
+              console.log(error);
           }
-        };
-      
-        fetchProperty();
-    }, [params.id, getPropertyById]);
-      
+      };
   
+      fetchProperty();
+    }, [params.id, getPropertyById]);  
+      
     const goBack = () => {
       navigate(-1);
     };
@@ -219,12 +224,12 @@ export default function UpdateListing(props) {
                         <label htmlFor="otherimages">Other image URLs (optional)</label>
                         <textarea
                             id="otherimages"
-                            name="other_Images"
+                            name="other_images"
                             className="form-control"
                             placeholder="Enter other image URLs separated by a newline"
-                            rows="4"
+                            rows="10"
                             onChange={handleChange}
-                            value={formData.other_Images.join('\n')}
+                            value={formData.other_images.join('\n')}
                         ></textarea>
                     </div>
                     <div className="mb-3">
@@ -232,7 +237,7 @@ export default function UpdateListing(props) {
                         <input type="number" id="price" name="price" className="form-control" required onChange={handleChange} value={formData.price}/>
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="amenities">Inclusives(optional)</label>
+                        <label htmlFor="inclusives">Inclusives(optional)</label>
                         <textarea
                             id="inclusives"
                             name="inclusives"
