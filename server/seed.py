@@ -2,6 +2,7 @@ from app import User,Property, Reservation,db,app
 from datetime import datetime,timedelta
 from faker import Faker 
 from random import choice as rc
+from werkzeug.security import generate_password_hash,check_password_hash
 
 fake = Faker()
 
@@ -21,7 +22,7 @@ with app.app_context():
          name = fake.name(),
          email = fake.email(),
          phone = fake.phone_number(),
-         password = fake.word(),
+         password = generate_password_hash('1234'),
          user_type = rc(user_types)
       )
       db.session.add(user)
@@ -80,7 +81,7 @@ with app.app_context():
         bathrooms = fake.random_int(min=1, max=3),
         beds = fake.random_int(min=1, max=3),
         location = rc(locations),
-        user_id = fake.random_int(min=1, max=50)
+        user_id = rc(users).id
       )
       db.session.add(property)
       properties.append(property)
@@ -103,7 +104,7 @@ with app.app_context():
             check_out_date=end_date,
             number_of_guests=fake.random_int(max=5, min=1),
             total=fake.random_int(min=100, max=1000),
-            user_id=fake.random_int(min=1, max=50),
+            user_id= rc(users).id,
             property_id=property.id
         )
         db.session.add(reservation)

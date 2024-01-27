@@ -1,8 +1,8 @@
-"""migrate
+"""airbnb db
 
-Revision ID: 2ac9c5656c1f
+Revision ID: e8d91381912a
 Revises: 
-Create Date: 2024-01-26 18:17:38.356396
+Create Date: 2024-01-27 13:35:11.627436
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2ac9c5656c1f'
+revision = 'e8d91381912a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,8 +27,8 @@ def upgrade():
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
-    sa.Column('email', sa.String(length=50), nullable=False),
-    sa.Column('phone', sa.String(length=14), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
+    sa.Column('phone', sa.String(), nullable=False),
     sa.Column('password', sa.String(length=450), nullable=False),
     sa.Column('user_type', sa.String(length=50), nullable=False),
     sa.PrimaryKeyConstraint('id'),
@@ -37,7 +37,7 @@ def upgrade():
     )
     op.create_table('properties',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('title', sa.String(length=50), nullable=False),
+    sa.Column('title', sa.String(), nullable=False),
     sa.Column('description', sa.String(length=300), nullable=False),
     sa.Column('image', sa.String(), nullable=False),
     sa.Column('other_images', sa.JSON(), nullable=False),
@@ -49,7 +49,7 @@ def upgrade():
     sa.Column('capacity', sa.Integer(), nullable=False),
     sa.Column('bathrooms', sa.Integer(), nullable=False),
     sa.Column('beds', sa.Integer(), nullable=False),
-    sa.Column('location', sa.String(length=50), nullable=False),
+    sa.Column('location', sa.String(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
