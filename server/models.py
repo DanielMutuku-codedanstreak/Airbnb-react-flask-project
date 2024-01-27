@@ -18,7 +18,7 @@ class User(db.Model, SerializerMixin):
     reservations = db.relationship('Reservation', backref='user', lazy=True, cascade='all, delete-orphan')
 
     # One-to-Many relationship: a user can have many properties
-    properties = db.relationship('Property', backref='user', lazy=True)
+    properties = db.relationship('Property', backref='user', lazy=True, cascade='all, delete-orphan')
 
 class Property(db.Model, SerializerMixin):
     __tablename__ = 'properties'
