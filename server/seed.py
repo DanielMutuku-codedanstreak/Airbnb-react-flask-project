@@ -31,6 +31,7 @@ with app.app_context():
 
    print('************** seeding property **************')
 
+   hosts = [user for user in users if user.user_type == 'Host']
    properties=[]
    amenities = ["Wi-Fi", "Television",  "Air conditioning"]
    categories = [
@@ -81,7 +82,7 @@ with app.app_context():
         bathrooms = fake.random_int(min=1, max=3),
         beds = fake.random_int(min=1, max=3),
         location = rc(locations),
-        user_id = rc(users).id
+        user_id = rc(hosts).id
       )
       db.session.add(property)
       properties.append(property)
