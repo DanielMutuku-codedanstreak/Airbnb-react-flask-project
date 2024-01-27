@@ -87,39 +87,37 @@ def delete_user():
 @user_bp.route('/user', methods=['PATCH'])
 @jwt_required()
 def update_user_details():
-    user_id = get_jwt_identity() #current user id
+    user_id = get_jwt_identity()  # current user id
     user = User.query.filter_by(id=user_id).first()
 
     if user:
         data = request.get_json()
 
-        name = data['name']
-        email = data['email']
-        phone = data['phone']
+        name = data.get('name', user.name)  
+        email = data.get('email', user.email)  
+        phone = data.get('phone', user.phone)  
 
-        if name:
-            user.name = name.title()
+        user.name = name.title()
 
-        if email:
+        # Check if the provided email is different from the current email
+        if email != user.email:
             check_email = User.query.filter_by(email=email).first()
-            if check_email and (check_email != user.email):
-                return jsonify({"error": f"The email: {email} already exists"}), 404 
+            if check_email:
+                return jsonify({"error": f"The email: {email} already exists"}), 404
+            user.email = email
 
-            user.email = email 
-
-        if phone:
+        # Check if the provided phone is different from the current phone
+        if phone != user.phone:
             check_phone = User.query.filter_by(phone=phone).first()
-            if check_email and (check_email != user.phone):
-                return jsonify({"error": f"The phone: {phone} already exists"}), 404   
+            if check_phone:
+                return jsonify({"error": f"The phone: {phone} already exists"}), 404
             user.phone = phone
-        # update the user
-        
-        
-        
+
+        # Update the user
         db.session.commit()
         return jsonify({"success": "User updated successfully"}), 200
 
-    elif not user:
+    else:
         return jsonify({"error": "User not found"}), 404
 
 #reset password

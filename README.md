@@ -59,9 +59,9 @@ search functionality and booking system.
 - An authenticated host can view guests who have booked their BnB properties
 
 ## live server
-- 
+- to access the frontend here is the link: https://65b40a0c51be0c031dcbb855--incandescent-heliotrope-d56da9.netlify.app
 
-- to access the backend here is the link: https://65b2f12d6283c34cb8428d0e--unrivaled-brigadeiros-679b0c.netlify.app/
+- to access the backend here is the link: https://airbnb-react-flask-app.onrender.com
 
 ## Known Bugs
 - The application works perfectly well, no bugs.

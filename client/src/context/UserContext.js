@@ -17,44 +17,58 @@ export default function UserProvider({children}) {
    
    
    //Registration
-
    function registerUser(name, email, phone, password, userType) {
-      {
-         fetch("/register",{
-             method: "POST",
-             headers: {
-                 "Content-Type": "application/json"
-             },
-             body: JSON.stringify({
-                  name:name,
-                  email:email,
-                  phone:phone,
-                  password:password,
-                  user_type:userType })
- 
-         }
-         )
-         .then(res => res.json())
-         .then(response => {
-             
-             Swal.fire({
-             position: "top-end",
-             icon: "success",
-             title: response.success,
-             showConfirmButton: false,
-             timer: 1500
-             });
-             navigate('/login')
+    fetch("https://airbnb-react-flask-app.onrender.com/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            phone: phone,
+            password: password,
+            user_type: userType
+        })
+    })
+    .then(res => res.json())
+    .then(response => {
+        if (response.success) {
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: response.success,
+                showConfirmButton: false,
+                timer: 1500
+            });
             
-         })
-         
-     }
-   }
+            navigate('/login');
+        } else {
+            // Handle registration failure
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: `Registration failed! ${response.error} !`,
+                showConfirmButton: true
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Error during registration:", error);
+        
+        Swal.fire({
+            position: "top",
+            icon: "error",
+            title: "An error occurred during registration",
+            showConfirmButton: true
+        });
+    });
+}
    
    // Login
    function login(email, password)
     {
-        fetch("/login",{
+        fetch("https://airbnb-react-flask-app.onrender.com/login",{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -100,50 +114,55 @@ export default function UserProvider({children}) {
 
 
     //Reset password
-    function resetPassword(name, email,  password) {
-      {
-         fetch("/reset_password",{
-             method: "POST",
-             headers: {
-                 "Content-Type": "application/json"
-             },
-             body: JSON.stringify({
-                  name:name,
-                  email:email,
-                  password:password })
- 
-         }
-         )
-         .then(res => res.json())
-         .then(response => {
-             
-             Swal.fire({
-             position: "top-end",
-             icon: "success",
-             title: response.success,
-             showConfirmButton: false,
-             timer: 1500
-             });
-             navigate('/login')
-            
-         })
-        //  .catch(error => {
-        //     Swal.fire({
-        //        position: "top",
-        //        icon: "error",
-        //        title: "failed",
-        //        text: response.error,
-        //     });
-            
-        //  });
-     }
-   }
+    function resetPassword(name, email, password) {
+        fetch("https://airbnb-react-flask-app.onrender.com/reset_password", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password
+            })
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: response.success,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                navigate('/login');
+            } else {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Failed",
+                    text: response.error || "Unknown error",
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error occurred:", error);
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Failed",
+                text: "An unexpected error occurred.",
+            });
+        });
+    }
+    
 
 
 
    //logout
    function logout(){
-      fetch('/logout',{
+      fetch('https://airbnb-react-flask-app.onrender.com/logout',{
          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -172,7 +191,7 @@ export default function UserProvider({children}) {
     useEffect(()=>{
         if(authToken)
         {
-            fetch("/authenticated_user",{
+            fetch("https://airbnb-react-flask-app.onrender.com/authenticated_user",{
             method: "GET",
             headers: {
                 Accept: "application/json",
@@ -202,17 +221,17 @@ export default function UserProvider({children}) {
     // console.log(currentUser)
     
    // update current user details
-   function updateCurrentuserDetails(name,email,phone){
-    fetch('/user',{
+   function updateCurrentuserDetails(updatedName, updatedEmail, updatedPhone){
+    fetch('https://airbnb-react-flask-app.onrender.com/user',{
         method :'PATCH',
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`
         },
         body:JSON.stringify({
-            name:name,
-            email:email,
-            phone:phone
+            name:updatedName,
+            email:updatedEmail,
+            phone:updatedPhone
         })
 
     })
@@ -245,7 +264,7 @@ export default function UserProvider({children}) {
    //change password
 
    function changePassword( newPassword,currentPassword ){
-    fetch('/change_password',{
+    fetch('https://airbnb-react-flask-app.onrender.com/change_password',{
         method :'POST',
         headers: {
             "Content-Type": "application/json",
@@ -286,7 +305,7 @@ export default function UserProvider({children}) {
 
    // delete account
    function deleteAccount(){
-    fetch('/user',{
+    fetch('https://airbnb-react-flask-app.onrender.com/user',{
         method :'DELETE',
         headers: {
             "Content-Type": "application/json",
@@ -299,7 +318,7 @@ export default function UserProvider({children}) {
         console.log(response)
         if(response.error){
             Swal.fire({
-                position: "top-end",
+                position: "top",
                 icon: "error",
                 title: response.error,
                 showConfirmButton: false,
@@ -312,7 +331,7 @@ export default function UserProvider({children}) {
             setLoggedIn(false)
             setCurrentUser(null)
             Swal.fire({
-              position: "top-end",
+              position: "top",
               icon: "success",
               title: response.success,
               showConfirmButton: false,

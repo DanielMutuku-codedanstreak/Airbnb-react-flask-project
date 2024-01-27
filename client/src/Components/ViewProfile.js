@@ -3,12 +3,12 @@ import { UserContext } from '../context/UserContext';
 
 const ViewProfile = () => {
   const {currentUser, deleteAccount} = useContext(UserContext)
- const[loading, setloading] = useState(false)
+  const[loading, setloading] = useState(false)
 
- function handleDelete(){
-  deleteAccount()
- 
- }
+  function handleDelete(){
+    deleteAccount()
+  
+  }
 
   return (
     <div className="d-flex justify-content-center mt-5" style={{ minHeight: '65vh' }}>

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 
-export default function Login(props) {
+export default function Login() {
   const {login} = useContext(UserContext)
 
   const [email,setEmail] = useState();

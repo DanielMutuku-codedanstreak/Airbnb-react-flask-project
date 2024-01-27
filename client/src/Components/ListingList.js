@@ -15,7 +15,7 @@ export default function ListingList() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const list = currentListings.map((listing) => (
-    <Link key={listing.id} className="col-md-4" to={`/properties/${listing.id}`}>
+    <Link key={listing.id} className="col-md-4 text-decoration-none" to={`/properties/${listing.id}`}>
       <Listing listing={listing} />
     </Link>
   ));

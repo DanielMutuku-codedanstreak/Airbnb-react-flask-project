@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 export const ReservationContext = createContext();
 
 export default function ReservationProvider({ children }) {
-  const RESERVATION_API_URL = '/reservations';
+  const RESERVATION_API_URL = 'https://airbnb-react-flask-app.onrender.com/reservations';
   const [reservations, setReservations] = useState([]);
   const  navigate = useNavigate();
   const authToken = sessionStorage.getItem('authToken');
@@ -72,46 +72,53 @@ export default function ReservationProvider({ children }) {
   const deleteReservation = (id) => {
     const authToken = sessionStorage.getItem('authToken');
   
+    if (!authToken) {
+      // Handle the case where authToken is not available, maybe redirect to login
+      // Example: navigate('/login');
+      return;
+    }
+  
     fetch(`${RESERVATION_API_URL}/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${authToken && authToken}`,
+        Authorization: `Bearer ${authToken}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to cancel reservation - ${res.status}`);
+        }
+        return res.json();
+      })
       .then((response) => {
         if (response.success) {
-          // Reservation deleted successfully
           setOnChange(!onChange);
-          setReservations((prevReservations) =>
-            prevReservations.filter((reservation) => reservation.id !== id)
-          );
-  
-          
-          Swal.fire('Deleted!', 'Your reservation has been deleted.', 'success');
-        } else if (response.error) {
-          
-          console.error('Error deleting reservation:', response.error);
-  
-         
-          Swal.fire('Error', 'An error occurred while deleting the reservation.', 'error');
+          Swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: response.success,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // Navigate to a different page if needed
+          // Example: navigate('/success');
         } else {
-          
-          console.error('Something went wrong while deleting the reservation.');
-  
-          
-          Swal.fire('Error', 'Something went wrong. Please try again later.', 'error');
+          Swal.fire({
+            position: 'top',
+            icon: 'error',
+            title: 'Failed',
+            text: response.error || 'Unknown error',
+          });
         }
       })
       .catch((error) => {
-        
-        console.error('Error deleting reservation:', error);
+        console.error('Error cancelling reservation:', error);
   
-        
         Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
       });
   };
+  
 
 
 
