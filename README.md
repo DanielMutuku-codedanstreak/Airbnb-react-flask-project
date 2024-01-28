@@ -44,17 +44,19 @@ search functionality and booking system.
 
 - An authenticated host can add their properties.
 
+- An authenticated host view their own properties.
+
 - An authenticated user can view their bookings.
 
 - An authenticated user can cancel their booking.
 
 - An authenticated user can reset their password.
 
-- An authenticated host can delete own property.
+- An authenticated host can delete their own property.
 
 - An authenticated user can update their details.
 
-- An authenticated host can update its properties' details.
+- An authenticated host can update their properties' details.
 
 - An authenticated host can view guests who have booked their BnB properties
 
