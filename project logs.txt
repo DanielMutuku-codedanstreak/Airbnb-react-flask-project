@@ -17,4 +17,4 @@ An authenticated host can get their own questions.
 
 
 
-postgres://airbnb_react_flask_app_user:hC2OIg13iwbCpUtqVnf5BIyiO4Awr9zX@dpg-cmpn5smg1b2c73fco7ag-a.oregon-postgres.render.com/airbnb_react_flask_app
+postgresql://airbnb_react_flask_app_ynei_user:GkVTDnYdSGRE4I8uOkO33zQzYit3P36h@dpg-cmqdfaicn0vc73dn95f0-a.oregon-postgres.render.com/airbnb_react_flask_app_ynei
